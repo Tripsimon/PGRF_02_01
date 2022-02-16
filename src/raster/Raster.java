@@ -1,17 +1,17 @@
 package raster;
 
-public interface Raster {
+public interface Raster<E> {
 
     void clear();
 
-    void setClearColor(int color);
+    void setClearValue(E value);
 
     int getWidth();
 
     int getHeight();
 
-    int getPixel(int x, int y);
+    E getElement(int x, int y);
 
-    void setPixel(int x, int y, int color);
+    void setElement(int x, int y, E value);
 
 }
