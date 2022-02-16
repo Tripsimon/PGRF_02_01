@@ -13,6 +13,14 @@ public class ZBufferVisibility {
     }
 
     public  void drawPixelWithTest(int x, int y, double z, Col color){
-        // TODO: Implementace algoritmu Z-Buffer
+        iBuffer.setElement(x,y,color);
+    }
+
+    public ImageBuffer getiBuffer() {
+        return iBuffer;
+    }
+
+    public DepthBuffer getdBuffer() {
+        return dBuffer;
     }
 }
