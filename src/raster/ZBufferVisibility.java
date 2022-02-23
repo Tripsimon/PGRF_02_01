@@ -9,10 +9,15 @@ public class ZBufferVisibility {
     public ZBufferVisibility(ImageBuffer iBuffer) {
         this.iBuffer = iBuffer;
         // TODO: init depth bufferu
-        this.dBuffer = new DepthBuffer();
+        // this.dBuffer = new DepthBuffer();
     }
 
     public void drawPixelWithTest(int x, int y, double z, Col color) {
         // TODO: implementace algoritmu z-buffer
+        iBuffer.setElement(x, y, color);
+    }
+
+    public ImageBuffer getiBuffer() {
+        return iBuffer;
     }
 }
