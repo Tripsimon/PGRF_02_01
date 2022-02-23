@@ -1,5 +1,6 @@
 package control;
 
+import model.Vertex;
 import raster.ImageBuffer;
 import raster.ZBufferVisibility;
 import render.TriangleRasterizer;
@@ -42,35 +43,26 @@ public class Controller3D implements Controller {
     @Override
     public void initListeners(Panel panel) {
         panel.addMouseListener(new MouseAdapter() {
+          /*
             public void mousePressed(MouseEvent ev) {
-                if (ev.getButton() == MouseEvent.BUTTON1) {
-                    pressed = true;
-                    ox = ev.getX();
-                    oy = ev.getY();
-                    panel.getRaster().setElement(ox, oy,new Col(0xff0000));
-                    points.add(new Point(ox, oy));
-                    redraw();
-                }
+
             }
 
             public void mouseReleased(MouseEvent ev) {
-                if (ev.getButton() == MouseEvent.BUTTON1) {
-                    panel.getRaster().setElement(ox, oy,new Col(0xffff));
-                    pressed = false;
-                    redraw();
-                }
+
             }
+            */
+
         });
 
         panel.addMouseMotionListener(new MouseMotionAdapter() {
+
+           /*
             public void mouseDragged(MouseEvent ev) {
-                if (pressed) {
-                    ox = ev.getX();
-                    oy = ev.getY();
-                    panel.getRaster().setElement(ox, oy,new Col(0xffff00));
-                    redraw();
-                }
+
             }
+
+            */
         });
 
         panel.addKeyListener(new KeyAdapter() {
@@ -102,9 +94,9 @@ public class Controller3D implements Controller {
         height = panel.getRaster().getHeight();
 
         triangleRasterizer.rasterize(
-                new Point3D(1,1,0),
-                new Point3D(-1,0,0),
-                new Point3D(0,-1,0)
+                new Vertex(1,1,0),
+                new Vertex(-1,0,0),
+                new Vertex(0,-1,0)
                 );
 
         panel.repaint();
