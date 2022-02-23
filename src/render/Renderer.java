@@ -31,6 +31,8 @@ public class Renderer {
                         int indexV2 = start+1;
                         int indexV3 = start+2;
 
+                        start  +=3;
+
                         Vertex v1 = solid.getVb().get(solid.getIb().get(indexV1));
                         Vertex v2 = solid.getVb().get(solid.getIb().get(indexV2));
                         Vertex v3 = solid.getVb().get(solid.getIb().get(indexV3));
