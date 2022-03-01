@@ -1,5 +1,6 @@
 package render;
 
+import model.Vertex;
 import raster.ZBufferVisibility;
 import transforms.Col;
 import transforms.Point3D;
@@ -17,18 +18,18 @@ public class TriangleRasterizer {
         this.heigth = zBuffer.getiBuffer().getHeight();
     }
 
-    public void rasterize(Point3D p1, Point3D p2, Point3D p3) {
-        Vec3D a = p1.ignoreW()
+    public void rasterize(Vertex v1, Vertex v2, Vertex v3) {
+        Vec3D a = v1.getPosition().ignoreW()
                 .mul(new Vec3D(1, -1, 1))
                 .add(new Vec3D(1, 1, 0))
                 .mul(new Vec3D((width - 1) / 2., (heigth - 1) / 2., 1));
 
-        Vec3D b = p2.ignoreW()
+        Vec3D b = v2.getPosition().ignoreW()
                 .mul(new Vec3D(1, -1, 1))
                 .add(new Vec3D(1, 1, 0))
                 .mul(new Vec3D((width - 1) / 2., (heigth - 1) / 2., 1));
 
-        Vec3D c = p3.ignoreW()
+        Vec3D c = v3.getPosition().ignoreW()
                 .mul(new Vec3D(1, -1, 1))
                 .add(new Vec3D(1, 1, 0))
                 .mul(new Vec3D((width - 1) / 2., (heigth - 1) / 2., 1));

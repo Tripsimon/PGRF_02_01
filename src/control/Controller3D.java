@@ -1,8 +1,11 @@
 package control;
 
+import model.Vertex;
 import raster.ImageBuffer;
 import raster.ZBufferVisibility;
+import render.Renderer;
 import render.TriangleRasterizer;
+import solids.Arrow;
 import transforms.Col;
 import transforms.Point3D;
 import view.Panel;
@@ -46,18 +49,23 @@ public class Controller3D implements Controller {
         width = panel.getRaster().getWidth();
         height = panel.getRaster().getHeight();
 
+
+        Arrow arrow = new Arrow();
+        Renderer renderer = new Renderer(triangleRasterizer);
+        renderer.render(arrow);
+/*
         triangleRasterizer.rasterize(
-                new Point3D(1,1, 0.5),
-                new Point3D(-1,0, 0.5),
-                new Point3D(0,-1, 0.5)
+                new Vertex(1,1, 0.5),
+                new Vertex(-1,0, 0.5),
+                new Vertex(0,-1, 0.5)
         );
 
         triangleRasterizer.rasterize(
-                new Point3D(1,1, 0.7),
-                new Point3D(-1,0, 0.7),
-                new Point3D(0,-1, 0.7)
+                new Vertex(1,1, 0.7),
+                new Vertex(-1,0, 0.7),
+                new Vertex(0,-1, 0.7)
         );
-
+*/
 
         panel.repaint();
     }
