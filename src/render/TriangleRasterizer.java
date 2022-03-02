@@ -1,5 +1,6 @@
 package render;
 
+import model.Shader;
 import model.Vertex;
 import raster.ZBufferVisibility;
 import transforms.Col;
@@ -11,11 +12,13 @@ import java.awt.*;
 public class TriangleRasterizer {
     private ZBufferVisibility zBuffer;
     private int width, heigth;
+    private Shader shader;
 
-    public TriangleRasterizer(ZBufferVisibility zBuffer) {
+    public TriangleRasterizer(ZBufferVisibility zBuffer, Shader shader) {
         this.zBuffer = zBuffer;
         this.width = zBuffer.getiBuffer().getWidth();
         this.heigth = zBuffer.getiBuffer().getHeight();
+        this.shader = shader;
     }
 
     public void rasterize(Vertex v1, Vertex v2, Vertex v3) {
@@ -46,15 +49,21 @@ public class TriangleRasterizer {
             double s1 = (y-a.getY())/(b.getY()-a.getY());
             // x1 = Ax*(1-s1)+Bx*s1. Slide 129
             int x1 = (int)(a.getX()*(1-s1)+b.getX()*s1);
+            Vertex v12 = v1.mul(1 - s1).add(v2.mul(s1));
+
             // Interpolační koeficient. Odečtu minimum (y - Ay), dělím rozsahem (Cy - Ay)
             double s2 = (y-a.getY())/(c.getY()-a.getY());
             // x2 = Ax*(1-s2)+Cx*s2
             int x2 = (int)( a.getX()*(1-s2)+c.getX()*s2);
+            Vertex v13 = v1.mul(1 - s2).add(v3.mul(s2));
 
             for(int x = x1; x < x2; x++)
             {
+                double t = (x - x1) / (double)(x2 - x1);
+                Vertex v = v12.mul(1 - t).add(v13.mul(t));
+
                 // Todo: interpolace Z
-                zBuffer.drawPixelWithTest(x,y,0.5, new Col(0xff00));
+                zBuffer.drawPixelWithTest(x,y,0.5, shader.shade(v));
             }
         }
 

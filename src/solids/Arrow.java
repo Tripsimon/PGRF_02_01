@@ -3,15 +3,17 @@ package solids;
 import model.Part;
 import model.TopologyType;
 import model.Vertex;
+import transforms.Col;
 
 public class Arrow extends Solid {
 
     public Arrow() {
-        getvB().add(new Vertex(0,  0, 0));
-        getvB().add(new Vertex(.8, 0, 0));
-        getvB().add(new Vertex(.8, 1, 0));
-        getvB().add(new Vertex(1,  0, 0));
-        getvB().add(new Vertex(.8,-1, 0));
+        // TODO: Vhodně zvolit barvy
+        getvB().add(new Vertex(0,  0, 0, new Col(1., 0, 0)));
+        getvB().add(new Vertex(.8, 0, 0, new Col(1., 0, 0)));
+        getvB().add(new Vertex(.8, 1, 0, new Col(1., 0, 0)));
+        getvB().add(new Vertex(1,  0, 0, new Col(1., 0, 0)));
+        getvB().add(new Vertex(.8,-1, 0, new Col(1., 0, 0)));
 
         getiB().add(0);
         getiB().add(1);

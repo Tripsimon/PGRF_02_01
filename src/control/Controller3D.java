@@ -1,5 +1,8 @@
 package control;
 
+import model.Shader;
+import model.ShaderFullColor;
+import model.ShaderInterpolation;
 import model.Vertex;
 import raster.ImageBuffer;
 import raster.ZBufferVisibility;
@@ -36,7 +39,17 @@ public class Controller3D implements Controller {
     public void initObjects(ImageBuffer raster) {
         raster.setClearValue(new Col(0x101010));
         zBufferVisibility = new ZBufferVisibility(panel.getRaster());
-        triangleRasterizer = new TriangleRasterizer(zBufferVisibility);
+
+        Shader shaderFullColor = v -> {
+            return new Col(0, 1.0, 0);
+        };
+
+        Shader shaderInterpolation = v -> {
+            return v.getColor();
+        };
+
+        //triangleRasterizer = new TriangleRasterizer(zBufferVisibility, new ShaderFullColor());
+        triangleRasterizer = new TriangleRasterizer(zBufferVisibility, shaderInterpolation);
     }
 
     @Override
@@ -49,17 +62,17 @@ public class Controller3D implements Controller {
         width = panel.getRaster().getWidth();
         height = panel.getRaster().getHeight();
 
-
+/*
         Arrow arrow = new Arrow();
         Renderer renderer = new Renderer(triangleRasterizer);
-        renderer.render(arrow);
-/*
-        triangleRasterizer.rasterize(
-                new Vertex(1,1, 0.5),
-                new Vertex(-1,0, 0.5),
-                new Vertex(0,-1, 0.5)
-        );
+        renderer.render(arrow);*/
 
+        triangleRasterizer.rasterize(
+                new Vertex(1,1, 0.5, new Col(1., 0, 0)),
+                new Vertex(-1,0, 0.5, new Col(0., 1, 0)),
+                new Vertex(0,-1, 0.5, new Col(0., 0, 1))
+        );
+/*
         triangleRasterizer.rasterize(
                 new Vertex(1,1, 0.7),
                 new Vertex(-1,0, 0.7),
