@@ -107,6 +107,7 @@ public class TriangleRasterizer {
         System.out.println("C: " + c.getY());
 
 
+        /*
         // Od A po B, interpolace
         for (int y = (int) a.getY(); y < b.getY(); y++) {
             // Interpolační koeficient. Odečtu minimum (y - Ay), dělím rozsahem (By - Ay)
@@ -148,6 +149,8 @@ public class TriangleRasterizer {
 
 
         }
+        */
+
 
     }
 

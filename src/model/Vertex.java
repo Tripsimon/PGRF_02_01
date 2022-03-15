@@ -1,6 +1,7 @@
 package model;
 
 import transforms.Col;
+import transforms.Mat4;
 import transforms.Point3D;
 import transforms.Vec2D;
 
@@ -27,6 +28,13 @@ public class Vertex {
         this.color = col;
         this.textCoords = textCoords;
     }
+
+    public Vertex (Vertex ver){
+        this.position = ver.getPosition();
+        this.color = ver.getColor();
+        this.textCoords = ver.getTextCoords();
+    }
+
     public Point3D getPosition() {
         return position;
     }
@@ -59,5 +67,10 @@ public class Vertex {
         return "Vertex{" +
                 "position=" + position +
                 '}';
+    }
+
+    public Vertex transform(Mat4 matrix) {
+        Vertex returnVer = new Vertex(position.mul(matrix),this.color,textCoords);
+        return returnVer;
     }
 }

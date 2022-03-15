@@ -15,14 +15,15 @@ public class Renderer {
     private Mat4 camera;
     private Mat4 space;
     private Mat4 projection = new Mat4Identity();
+    private  Mat4 viewToApply;
 
     public Renderer(TriangleRasterizer triangleRasterizer) {
         this.triangleRasterizer = triangleRasterizer;
     }
 
     public void renderScene(List<Solid> scene) {
-
-        Mat4 view = model.mul(camera).mul(space).mul(projection);
+        System.out.println(viewToApply);
+        viewToApply = model.mul(camera).mul(space).mul(projection);
 
         for (Solid solid : scene)
             render(solid);
@@ -53,9 +54,9 @@ public class Renderer {
 
                         start += 3;
 
-                        Vertex v1 = solid.getvB().get(solid.getiB().get(indexV1));
-                        Vertex v2 = solid.getvB().get(solid.getiB().get(indexV2));
-                        Vertex v3 = solid.getvB().get(solid.getiB().get(indexV3));
+                        Vertex v1 = solid.getvB().get(solid.getiB().get(indexV1)).transform(viewToApply);
+                        Vertex v2 = solid.getvB().get(solid.getiB().get(indexV2)).transform(viewToApply);
+                        Vertex v3 = solid.getvB().get(solid.getiB().get(indexV3)).transform(viewToApply);
 
                         triangleRasterizer.rasterize(v1, v2, v3);
                     }
