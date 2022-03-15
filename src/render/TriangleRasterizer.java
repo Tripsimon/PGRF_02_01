@@ -63,7 +63,7 @@ public class TriangleRasterizer {
         System.out.println("B: " + b.getY());
         System.out.println("C: " + c.getY());
 
-        if (a.getY() > b.getY()) {
+        if (a.getY() >= b.getY()) {
             vecHelp = b;
             b = a;
             a = vecHelp;
@@ -77,7 +77,7 @@ public class TriangleRasterizer {
              */
         }
 
-        if (a.getY() > c.getY()) {
+        if (a.getY() >= c.getY()) {
             vecHelp = c;
             c = a;
             a = vecHelp;
@@ -90,7 +90,7 @@ public class TriangleRasterizer {
              */
         }
 
-        if (b.getY() > c.getY()) {
+        if (b.getY() >= c.getY()) {
             vecHelp = c;
             c = b;
             b = vecHelp;

@@ -4,19 +4,26 @@ import model.Part;
 import model.Vertex;
 import solids.Solid;
 import transforms.Mat4;
+import transforms.Mat4Identity;
 
 import java.util.List;
 
 public class Renderer {
     private TriangleRasterizer triangleRasterizer;
 
+    private Mat4 model;
     private Mat4 camera;
+    private Mat4 space;
+    private Mat4 projection = new Mat4Identity();
 
     public Renderer(TriangleRasterizer triangleRasterizer) {
         this.triangleRasterizer = triangleRasterizer;
     }
 
     public void renderScene(List<Solid> scene) {
+
+        Mat4 view = model.mul(camera).mul(space).mul(projection);
+
         for (Solid solid : scene)
             render(solid);
     }
@@ -59,5 +66,37 @@ public class Renderer {
                     break;
             }
         }
+    }
+
+    public Mat4 getModel() {
+        return model;
+    }
+
+    public void setModel(Mat4 model) {
+        this.model = model;
+    }
+
+    public Mat4 getCamera() {
+        return camera;
+    }
+
+    public void setCamera(Mat4 camera) {
+        this.camera = camera;
+    }
+
+    public Mat4 getSpace() {
+        return space;
+    }
+
+    public void setSpace(Mat4 space) {
+        this.space = space;
+    }
+
+    public Mat4 getProjection() {
+        return projection;
+    }
+
+    public void setProjection(Mat4 projection) {
+        this.projection = projection;
     }
 }
