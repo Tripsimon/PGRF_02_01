@@ -10,41 +10,110 @@ import transforms.Vec3D;
 import java.awt.*;
 
 public class TriangleRasterizer {
+
     private ZBufferVisibility zBuffer;
-    private int width, heigth;
+    private int width, height;
     private Shader shader;
+    private Vertex vertex1,vertex2,vertex3;
 
     public TriangleRasterizer(ZBufferVisibility zBuffer, Shader shader) {
         this.zBuffer = zBuffer;
         this.width = zBuffer.getiBuffer().getWidth();
-        this.heigth = zBuffer.getiBuffer().getHeight();
+        this.height = zBuffer.getiBuffer().getHeight();
         this.shader = shader;
     }
 
+
+
     public void rasterize(Vertex v1, Vertex v2, Vertex v3) {
-        Vec3D a = v1.getPosition().ignoreW()
-                .mul(new Vec3D(1, -1, 1))
-                .add(new Vec3D(1, 1, 0))
-                .mul(new Vec3D((width - 1) / 2., (heigth - 1) / 2., 1));
 
-        Vec3D b = v2.getPosition().ignoreW()
-                .mul(new Vec3D(1, -1, 1))
-                .add(new Vec3D(1, 1, 0))
-                .mul(new Vec3D((width - 1) / 2., (heigth - 1) / 2., 1));
+        vertex1 = v1;
+        vertex2 = v2;
+        vertex3 = v3;
 
-        Vec3D c = v3.getPosition().ignoreW()
-                .mul(new Vec3D(1, -1, 1))
-                .add(new Vec3D(1, 1, 0))
-                .mul(new Vec3D((width - 1) / 2., (heigth - 1) / 2., 1));
+        //Uprava dat
+        Vec3D a = doMath(vertex1);
+        Vec3D b = doMath(vertex2);
+        Vec3D c = doMath(vertex3);
 
-        zBuffer.getiBuffer().getGraphics().setColor(new Color(0xffff00));
+        //Vykreslení linií
+        zBuffer.getiBuffer().getGraphics().setColor(new Color(0xFFFF00));
         zBuffer.getiBuffer().getGraphics().drawLine((int)a.getX(), (int)a.getY(), (int)b.getX(), (int)b.getY());
         zBuffer.getiBuffer().getGraphics().drawLine((int)b.getX(), (int)b.getY(), (int)c.getX(), (int)c.getY());
         zBuffer.getiBuffer().getGraphics().drawLine((int)c.getX(), (int)c.getY(), (int)a.getX(), (int)a.getY());
 
-        // TODO: Seřadit vrcholy podle y
+        //Ořezání
+        if ((
+                (a.getX() > width - 1 || a.getX() < 0) &&
+                        (b.getX() > width - 1 || b.getX() < 0) &&
+                        (c.getX() > width - 1 || c.getX() < 0)
+        ) || (
+                (a.getY() > height - 1 || a.getY() < 0) &&
+                        (b.getY() > height - 1 || b.getY() < 0) &&
+                        (c.getY() > height - 1 || c.getY() < 0)
+        )) {
+            return;
+        }
+
+        //Seřazení
+
+        Vec3D vecHelp;
+        Vertex vertexHelp;
+
+        System.out.println("A: " +a.getY());
+        System.out.println("A: " +b.getY());
+        System.out.println("A: " +c.getY());
+
+        if(a.getY() < b.getY()){
+            vecHelp = b;
+            b = a;
+            a = vecHelp;
+
+            /*
+            vertexHelp = vertex2;
+            vertex2 = vertex1;
+            vertex1 = vertexHelp;
+
+
+             */
+        }
+
+        if(a.getY() < c.getY()){
+            vecHelp = c;
+            c = a;
+            a = vecHelp;
+
+            /*
+            vertexHelp = vertex3;
+            vertex3 = vertex1;
+            vertex1 = vertexHelp;
+
+             */
+        }
+
+        if(b.getY() < c.getY()){
+            vecHelp = c;
+            c = b;
+            b = vecHelp;
+
+            /*
+            vertexHelp = vertex3;
+            vertex3 = vertex2;
+            vertex2 = vertexHelp;
+
+             */
+        }
+        System.out.println("A: " + a.getY());
+        System.out.println("A: " +b.getY());
+        System.out.println("A: " +c.getY());
+
+
+
+
+
+
         // Od A po B, interpolace
-        for (int y = (int) a.getY(); y < b.getY(); y++){
+        for (int y = (int) a.getY(); y > b.getY(); y--){
             // Interpolační koeficient. Odečtu minimum (y - Ay), dělím rozsahem (By - Ay)
             double s1 = (y-a.getY())/(b.getY()-a.getY());
             // x1 = Ax*(1-s1)+Bx*s1. Slide 129
@@ -67,6 +136,12 @@ public class TriangleRasterizer {
             }
         }
 
-
+    }
+    private Vec3D doMath(Vertex v){
+        Vec3D response = v.getPosition().ignoreW()
+                .mul(new Vec3D(1, -1, 1))
+                .add(new Vec3D(1, 1, 0))
+                .mul(new Vec3D((width - 1) / 2., (height - 1) / 2., 1));
+        return response;
     }
 }

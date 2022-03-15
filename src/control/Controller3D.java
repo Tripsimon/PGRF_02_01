@@ -62,15 +62,15 @@ public class Controller3D implements Controller {
         width = panel.getRaster().getWidth();
         height = panel.getRaster().getHeight();
 
-/*
-        Arrow arrow = new Arrow();
-        Renderer renderer = new Renderer(triangleRasterizer);
-        renderer.render(arrow);*/
 
         triangleRasterizer.rasterize(
                 new Vertex(1,1, 0.5, new Col(1., 0, 0)),
                 new Vertex(-1,0, 0.5, new Col(0., 1, 0)),
                 new Vertex(0,-1, 0.5, new Col(0., 0, 1))
+
+
+
+
         );
 /*
         triangleRasterizer.rasterize(
