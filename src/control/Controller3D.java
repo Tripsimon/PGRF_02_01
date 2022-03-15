@@ -9,8 +9,10 @@ import raster.ZBufferVisibility;
 import render.Renderer;
 import render.TriangleRasterizer;
 import solids.Arrow;
+import transforms.Camera;
 import transforms.Col;
 import transforms.Point3D;
+import transforms.Vec3D;
 import view.Panel;
 
 import java.awt.*;
@@ -26,6 +28,7 @@ public class Controller3D implements Controller {
     private boolean pressed = false;
     private int ox, oy;
 
+    private Camera camera;
     private ZBufferVisibility zBufferVisibility;
     private TriangleRasterizer triangleRasterizer;
 
@@ -34,6 +37,12 @@ public class Controller3D implements Controller {
         initObjects(panel.getRaster());
         initListeners(panel);
         redraw();
+
+        camera = new Camera()
+                .withPosition(new Vec3D(15,0,0))
+                .withAzimuth(Math.PI)
+                .withZenith(0)
+                .withFirstPerson(true);
     }
 
     public void initObjects(ImageBuffer raster) {

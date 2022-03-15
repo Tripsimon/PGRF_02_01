@@ -3,11 +3,14 @@ package render;
 import model.Part;
 import model.Vertex;
 import solids.Solid;
+import transforms.Mat4;
 
 import java.util.List;
 
 public class Renderer {
     private TriangleRasterizer triangleRasterizer;
+
+    private Mat4 camera;
 
     public Renderer(TriangleRasterizer triangleRasterizer) {
         this.triangleRasterizer = triangleRasterizer;

@@ -14,7 +14,7 @@ public class TriangleRasterizer {
     private ZBufferVisibility zBuffer;
     private int width, height;
     private Shader shader;
-    private Vertex vertex1,vertex2,vertex3;
+    private Vertex vertex1, vertex2, vertex3;
 
     public TriangleRasterizer(ZBufferVisibility zBuffer, Shader shader) {
         this.zBuffer = zBuffer;
@@ -22,7 +22,6 @@ public class TriangleRasterizer {
         this.height = zBuffer.getiBuffer().getHeight();
         this.shader = shader;
     }
-
 
 
     public void rasterize(Vertex v1, Vertex v2, Vertex v3) {
@@ -38,9 +37,9 @@ public class TriangleRasterizer {
 
         //Vykreslení linií
         zBuffer.getiBuffer().getGraphics().setColor(new Color(0xFFFF00));
-        zBuffer.getiBuffer().getGraphics().drawLine((int)a.getX(), (int)a.getY(), (int)b.getX(), (int)b.getY());
-        zBuffer.getiBuffer().getGraphics().drawLine((int)b.getX(), (int)b.getY(), (int)c.getX(), (int)c.getY());
-        zBuffer.getiBuffer().getGraphics().drawLine((int)c.getX(), (int)c.getY(), (int)a.getX(), (int)a.getY());
+        zBuffer.getiBuffer().getGraphics().drawLine((int) a.getX(), (int) a.getY(), (int) b.getX(), (int) b.getY());
+        zBuffer.getiBuffer().getGraphics().drawLine((int) b.getX(), (int) b.getY(), (int) c.getX(), (int) c.getY());
+        zBuffer.getiBuffer().getGraphics().drawLine((int) c.getX(), (int) c.getY(), (int) a.getX(), (int) a.getY());
 
         //Ořezání
         if ((
@@ -60,11 +59,11 @@ public class TriangleRasterizer {
         Vec3D vecHelp;
         Vertex vertexHelp;
 
-        System.out.println("A: " +a.getY());
-        System.out.println("A: " +b.getY());
-        System.out.println("A: " +c.getY());
+        System.out.println("A: " + a.getY());
+        System.out.println("B: " + b.getY());
+        System.out.println("C: " + c.getY());
 
-        if(a.getY() < b.getY()){
+        if (a.getY() > b.getY()) {
             vecHelp = b;
             b = a;
             a = vecHelp;
@@ -78,7 +77,7 @@ public class TriangleRasterizer {
              */
         }
 
-        if(a.getY() < c.getY()){
+        if (a.getY() > c.getY()) {
             vecHelp = c;
             c = a;
             a = vecHelp;
@@ -91,7 +90,7 @@ public class TriangleRasterizer {
              */
         }
 
-        if(b.getY() < c.getY()){
+        if (b.getY() > c.getY()) {
             vecHelp = c;
             c = b;
             b = vecHelp;
@@ -104,40 +103,55 @@ public class TriangleRasterizer {
              */
         }
         System.out.println("A: " + a.getY());
-        System.out.println("A: " +b.getY());
-        System.out.println("A: " +c.getY());
-
-
-
-
+        System.out.println("B: " + b.getY());
+        System.out.println("C: " + c.getY());
 
 
         // Od A po B, interpolace
-        for (int y = (int) a.getY(); y > b.getY(); y--){
+        for (int y = (int) a.getY(); y < b.getY(); y++) {
             // Interpolační koeficient. Odečtu minimum (y - Ay), dělím rozsahem (By - Ay)
-            double s1 = (y-a.getY())/(b.getY()-a.getY());
+            double s1 = (y - a.getY()) / (b.getY() - a.getY());
             // x1 = Ax*(1-s1)+Bx*s1. Slide 129
-            int x1 = (int)(a.getX()*(1-s1)+b.getX()*s1);
+            int x1 = (int) (a.getX() * (1 - s1) + b.getX() * s1);
             Vertex v12 = v1.mul(1 - s1).add(v2.mul(s1));
 
             // Interpolační koeficient. Odečtu minimum (y - Ay), dělím rozsahem (Cy - Ay)
-            double s2 = (y-a.getY())/(c.getY()-a.getY());
+            double s2 = (y - a.getY()) / (c.getY() - a.getY());
             // x2 = Ax*(1-s2)+Cx*s2
-            int x2 = (int)( a.getX()*(1-s2)+c.getX()*s2);
+            int x2 = (int) (a.getX() * (1 - s2) + c.getX() * s2);
             Vertex v13 = v1.mul(1 - s2).add(v3.mul(s2));
 
-            for(int x = x1; x < x2; x++)
-            {
-                double t = (x - x1) / (double)(x2 - x1);
+            for (int x = x1; x < x2; x++) {
+                double t = (x - x1) / (double) (x2 - x1);
                 Vertex v = v12.mul(1 - t).add(v13.mul(t));
-
-                // Todo: interpolace Z
-                zBuffer.drawPixelWithTest(x,y,0.5, shader.shade(v));
+                zBuffer.drawPixelWithTest(x, y, 0.5, shader.shade(v));
             }
+
+
+        }
+
+
+        // Od B po C, interpolace
+        for (int y = (int) b.getY(); y < c.getY(); y++) {
+            double s1 = (y - b.getY()) / (c.getY() - b.getY());
+            double s2 = (y - a.getY()) / (c.getY() - a.getY());
+            int x1 = (int) (b.getX() * (1 - s1) + c.getX() * s1);
+            int x2 = (int) (a.getX() * (1 - s2) + c.getX() * s2);
+
+            Vertex v23 = v2.mul(1 - s1).add(v2.mul(s1));
+            Vertex v13 = v1.mul(1 - s2).add(v3.mul(s2));
+            for (int x = x1; x < x2; x++) {
+                double t = (x - x1) / (double) (x2 - x1);
+                Vertex v = v23.mul(1 - t).add(v13.mul(t));
+                zBuffer.drawPixelWithTest(x, y, 0.5, shader.shade(v));
+            }
+
+
         }
 
     }
-    private Vec3D doMath(Vertex v){
+
+    private Vec3D doMath(Vertex v) {
         Vec3D response = v.getPosition().ignoreW()
                 .mul(new Vec3D(1, -1, 1))
                 .add(new Vec3D(1, 1, 0))
