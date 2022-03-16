@@ -11,6 +11,11 @@ public class DepthBuffer implements Raster<Double> {
         this.height = height;
     }
 
+    public boolean testElement(int x, int y, double z){
+        Double zTest = getElement(x, y);
+        return (zTest != null) && (zTest > z && z >= 0);
+    }
+
     @Override
     public void clear() {
 
