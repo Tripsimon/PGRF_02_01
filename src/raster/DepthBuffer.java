@@ -16,7 +16,11 @@ public class DepthBuffer implements Raster<Double> {
 
     @Override
     public void clear() {
-
+        for (int x = 0; x < getWidth(); x++) {
+            for (int y = 0; y < getHeight(); y++) {
+                buffer[x][y] = clearValue;
+            }
+        }
     }
 
     @Override
@@ -26,18 +30,19 @@ public class DepthBuffer implements Raster<Double> {
 
     @Override
     public int getWidth() {
-        return this.width;
+        return buffer.length;
     }
 
     @Override
     public int getHeight() {
-        return this.height;
+        if (getWidth() > 0) {
+            return buffer[0].length;
+        }
+        return 0;
     }
 
     @Override
     public Double getElement(int x, int y) {
-        System.out.println(x);
-        System.out.println(getWidth());
         if (getWidth() > x && x > -1 && getHeight() > y && y > -1) {
             return buffer[x][y];
         }
@@ -50,8 +55,10 @@ public class DepthBuffer implements Raster<Double> {
         }
     }
 
-    public boolean testElement(int x, int y, double z){
-        Double zTest = getElement(x, y);
-        return (zTest != null) && (zTest > z && z >= 0);
+    public boolean testElement(int x, int y, double z) {
+        Double currentDepth = getElement(x, y);
+        boolean result = (currentDepth != null) && (currentDepth > z && z >= 0);
+        return result;
     }
+
 }

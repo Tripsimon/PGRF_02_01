@@ -22,7 +22,6 @@ public class Renderer {
     }
 
     public void renderScene(List<Solid> scene) {
-        System.out.println(viewToApply);
         viewToApply = model.mul(camera).mul(space).mul(projection);
 
         for (Solid solid : scene)
@@ -53,16 +52,16 @@ public class Renderer {
                         int indexV3 = start + 2;
 
                         start += 3;
+/*
 
-                    /*
                         Vertex v1 = solid.getvB().get(solid.getiB().get(indexV1)).transform(viewToApply);
                         Vertex v2 = solid.getvB().get(solid.getiB().get(indexV2)).transform(viewToApply);
                         Vertex v3 = solid.getvB().get(solid.getiB().get(indexV3)).transform(viewToApply);
-                    */
+*/
 
-                        Vertex v1 = solid.getvB().get(solid.getiB().get(indexV1));
-                        Vertex v2 = solid.getvB().get(solid.getiB().get(indexV2));
-                        Vertex v3 = solid.getvB().get(solid.getiB().get(indexV3));
+                        Vertex v1 = solid.getvB().get(solid.getiB().get(indexV1)).transform(viewToApply);
+                        Vertex v2 = solid.getvB().get(solid.getiB().get(indexV2)).transform(viewToApply);
+                        Vertex v3 = solid.getvB().get(solid.getiB().get(indexV3)).transform(viewToApply);
 
 
                         triangleRasterizer.rasterize(v1, v2, v3);
