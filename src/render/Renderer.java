@@ -54,15 +54,17 @@ public class Renderer {
 
                         start += 3;
 
-                        /*
+                    /*
                         Vertex v1 = solid.getvB().get(solid.getiB().get(indexV1)).transform(viewToApply);
                         Vertex v2 = solid.getvB().get(solid.getiB().get(indexV2)).transform(viewToApply);
                         Vertex v3 = solid.getvB().get(solid.getiB().get(indexV3)).transform(viewToApply);
-                        */
+                    */
 
                         Vertex v1 = solid.getvB().get(solid.getiB().get(indexV1));
                         Vertex v2 = solid.getvB().get(solid.getiB().get(indexV2));
                         Vertex v3 = solid.getvB().get(solid.getiB().get(indexV3));
+
+
                         triangleRasterizer.rasterize(v1, v2, v3);
                     }
 

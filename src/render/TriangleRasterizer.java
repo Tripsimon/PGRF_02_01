@@ -125,7 +125,7 @@ public class TriangleRasterizer {
             for (int x = x1; x < x2; x++) {
                 double t = (x - x1) / (double) (x2 - x1);
                 Vertex v = v12.mul(1 - t).add(v13.mul(t));
-                zBuffer.drawPixelWithTest(x, y, 0.1, shader.shade(v));
+                zBuffer.drawPixelWithTest(x, y, 0.5, shader.shade(v));
             }
 
 
@@ -146,7 +146,7 @@ public class TriangleRasterizer {
                 double t = (x - x1) / (double) (x2 - x1);
                 //Vec3D point  = v23.mul(1-t).add(v13.mul(t));
                 Vertex v = v23.mul(1 - t).add(v13.mul(t));
-                zBuffer.drawPixelWithTest(x, y, 1.2, shader.shade(v));
+                zBuffer.drawPixelWithTest(x, y, 0.5, shader.shade(v));
             }
 
 

@@ -16,6 +16,7 @@ public class ZBufferVisibility {
         if (dBuffer.testElement(x,y,z)){
             dBuffer.setElement(x, y, z);
             iBuffer.setElement(x, y, color);
+
         }
 
     }
