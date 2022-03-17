@@ -222,6 +222,7 @@ public class Controller3D implements Controller {
                 }
                 // - /Změna Gradient modu
 
+                // - Translace
                 if (e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
                     for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
                         solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
@@ -247,6 +248,37 @@ public class Controller3D implements Controller {
                     }
                 }
 
+                if (e.getKeyCode() == KeyEvent.VK_NUMPAD1) {
+                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
+                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4RotX(0.03)).getPosition());
+                    }
+                }
+                if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
+                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
+                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4RotY(0.03)).getPosition());
+                    }
+                }
+                if (e.getKeyCode() == KeyEvent.VK_NUMPAD3) {
+                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
+                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4RotZ(0.03)).getPosition());
+                    }
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_MULTIPLY) {
+                    for (int k = 0; k < 360; k++) {
+
+
+                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
+                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4RotX(0.03)).getPosition());
+                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4RotY(0.03)).getPosition());
+                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4RotZ(0.03)).getPosition());
+                    }
+
+                    }
+                }
+                redraw();
+
+                // /- Translace
 
                 // - Překreslení
                 redraw();
