@@ -60,9 +60,11 @@ public class Controller3D implements Controller {
 
         );
 
-
+        Axis osa = new Axis();
         Cube kocka = new Cube();
-        //solidList.add(kocka);
+
+        solidList.add(kocka);
+        solidList.add(osa);
         //solidList.add(test);
         //solidList.add(test2);
         //solidList.add(testLine);
@@ -201,35 +203,28 @@ public class Controller3D implements Controller {
                 // - /Změna Wireframe modu
 
                 if (e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
-                    System.out.println(solidList.get(0).getvB().get(0));
-                    System.out.println(solidList.get(0).getvB().get(0).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
-                    solidList.get(0).getvB().get(0).setPosition(solidList.get(0).getvB().get(0).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
-                    solidList.get(0).getvB().get(1).setPosition(solidList.get(0).getvB().get(1).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
-                    solidList.get(0).getvB().get(2).setPosition(solidList.get(0).getvB().get(2).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
+                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
+                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
+                    }
+
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_NUMPAD5) {
-                    System.out.println(solidList.get(0).getvB().get(0));
-                    System.out.println(solidList.get(0).getvB().get(0).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
-                    solidList.get(0).getvB().get(0).setPosition(solidList.get(0).getvB().get(0).transform(new Mat4Transl(0.2, 0, 0)).getPosition());
-                    solidList.get(0).getvB().get(1).setPosition(solidList.get(0).getvB().get(1).transform(new Mat4Transl(0.2, 0, 0)).getPosition());
-                    solidList.get(0).getvB().get(2).setPosition(solidList.get(0).getvB().get(2).transform(new Mat4Transl(0.2, 0, 0)).getPosition());
+                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
+                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4Transl(0.2, 0, 0)).getPosition());
+                    }
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_NUMPAD4) {
-                    System.out.println(solidList.get(0).getvB().get(0));
-                    System.out.println(solidList.get(0).getvB().get(0).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
-                    solidList.get(0).getvB().get(0).setPosition(solidList.get(0).getvB().get(0).transform(new Mat4Transl(0, -0.2, 0)).getPosition());
-                    solidList.get(0).getvB().get(1).setPosition(solidList.get(0).getvB().get(1).transform(new Mat4Transl(0, -0.2, 0)).getPosition());
-                    solidList.get(0).getvB().get(2).setPosition(solidList.get(0).getvB().get(2).transform(new Mat4Transl(0, -0.2, 0)).getPosition());
+                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
+                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4Transl(0, -0.2, 0)).getPosition());
+                    }
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_NUMPAD6) {
-                    System.out.println(solidList.get(0).getvB().get(0));
-                    System.out.println(solidList.get(0).getvB().get(0).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
-                    solidList.get(0).getvB().get(0).setPosition(solidList.get(0).getvB().get(0).transform(new Mat4Transl(0, 0.2, 0)).getPosition());
-                    solidList.get(0).getvB().get(1).setPosition(solidList.get(0).getvB().get(1).transform(new Mat4Transl(0, 0.2, 0)).getPosition());
-                    solidList.get(0).getvB().get(2).setPosition(solidList.get(0).getvB().get(2).transform(new Mat4Transl(0, 0.2, 0)).getPosition());
+                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
+                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4Transl(0, 0.2, 0)).getPosition());
+                    }
                 }
 
 

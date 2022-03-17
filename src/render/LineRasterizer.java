@@ -1,4 +1,5 @@
 package render;
+
 import model.Vertex;
 import raster.Raster;
 import raster.ZBufferVisibility;
@@ -11,9 +12,11 @@ import java.awt.*;
 import java.util.Arrays;
 
 //Extendování (dědění) abstraktní třídy LineRasterizer
-public class LineRasterizer{
+public class LineRasterizer {
     private ZBufferVisibility zBuffer;
     private int width, height;
+    private Vertex vertex1, vertex2;
+
     //Kontruktor třídy
     public LineRasterizer(ZBufferVisibility zBuffer) {
 
@@ -25,83 +28,54 @@ public class LineRasterizer{
 
     // Metoda pro rasterizování zadané linie
     public void rasterize(Vertex v1, Vertex v2) {
+        vertex1 = v1;
+        vertex2 = v2;
+
+        //Uprava dat
+        Vec3D a = doMath(vertex1);
+        Vec3D b = doMath(vertex2);
+
+        //Vykreslení linií
+
+
+        //Ořezání
         /*
-        Vec3D a = doMath(v1);
-        Vec3D b = doMath(v2);
-
-        zBuffer.getiBuffer().getGraphics().drawLine((int) a.getX(), (int) a.getY(), (int) b.getX(), (int) b.getY());
-        */
-
-        Vec3D bs = v1.dehomogenize().get().mul(new Vec3D(1, -1, 1)).add(new Vec3D(1, 1, 0)).mul(new Vec3D((width - 1) / 2., (height - 1) / 2., 1));
-        Vec3D as = v2.dehomogenize().get().mul(new Vec3D(1, -1, 1)).add(new Vec3D(1, 1, 0)).mul(new Vec3D((width - 1) / 2., (height - 1) / 2., 1));
-
-        //zahozeni hran, ktere nebudou videt
         if ((
-                (as.getX() > width - 1 || as.getX() < 0) &&
-                        (bs.getX() > width - 1 || bs.getX() < 0)
+                (a.getX() > width - 1 || a.getX() < 0) &&
+                        (b.getX() > width - 1 || b.getX() < 0)
         ) || (
-                (as.getY() > height - 1 || as.getY() < 0) &&
-                        (bs.getY() > height - 1 || bs.getY() < 0)
+                (a.getY() > height - 1 || a.getY() < 0) &&
+                        (b.getY() > height - 1 || b.getY() < 0)
         )) {
             return;
         }
+        */
 
-        int x1 = (int) as.getX();
-        int x2 = (int) bs.getX();
-        int y1 = (int) as.getY();
-        int y2 = (int) bs.getY();
-        int x, y, dx, dy, incx, incy, o;
 
-        if (x2 >= x1) {
-            dx = x2 - x1;
-            incx = 1;
-        } else {
-            dx = x1 - x2;
-            incx = -1;
-        }
-        if (y2 >= y1) {
-            dy = y2 - y1;
-            incy = 1;
-        } else {
-            dy = y1 - y2;
-            incy = -1;
-        }
-        x = x1;
-        y = y1;
-        if (dx >= dy) {
-            dy <<= 1;
-            o = dy - dx;
-            dx <<= 1;
-            while (x != x2) {
-                double s = (y - as.getY()) / (bs.getY() - as.getY());
-                Vec3D ab = as.mul(1 - s).add(bs.mul(s));
-                Vertex vAB = v1.mul(1 - s).add(v2.mul(s));
-                zBuffer.drawPixelWithTest(x, y, ab.getZ(), new Col(255,255,255));
-                if (o >= 0) {
-                    y += incy;
-                    o -= dx;
-                }
-                o += dy;
-                x += incx;
-            }
-        } else {
-            dx <<= 1;
-            o = dx - dy;
-            dy <<= 1;
-            while (y != y2) {
-                double s = (y - as.getY()) / (bs.getY() - as.getY());
-                Vec3D ab = as.mul(1 - s).add(bs.mul(s));
-                Vertex vAB = v2.mul(1 - s).add(v1.mul(s));
-                zBuffer.drawPixelWithTest(x, y, ab.getZ(), new Col(255,255,255));
-                if (o >= 0) {
-                    x += incx;
-                    o -= dy;
-                }
-                o += dx;
-                y += incy;
-            }
+        //Seřazení
+
+        Vec3D vecHelp;
+
+        if (a.getY() >= b.getY()) {
+            vecHelp = b;
+            b = a;
+            a = vecHelp;
         }
 
+        if (
+                a.getX() > 0 &&
+                        a.getX() < width &&
+                        a.getY() > 0 &&
+                        a.getY() < height &&
+
+                        b.getX() > 0 &&
+                        b.getX() < width &&
+                        b.getY() > 0 &&
+                        b.getY() < height
+
+        ) {
+            zBuffer.getiBuffer().getGraphics().drawLine((int) a.getX(), (int) a.getY(), (int) b.getX(), (int) b.getY());
+        }
     }
 
     private Vec3D doMath(Vertex v) {

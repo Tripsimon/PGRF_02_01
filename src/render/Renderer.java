@@ -47,9 +47,40 @@ public class Renderer {
                     break;
                 case LINES:
 
-                    Vertex v1p = solid.getvB().get(solid.getiB().get(0)).transform(viewToApply);
-                    Vertex v2p = solid.getvB().get(solid.getiB().get(1)).transform(viewToApply);
-                    lineRasterizer.rasterize(v1p, v2p);
+                    System.out.println(solid.getiB().get(0));
+                    System.out.println(solid.getiB().get(1));
+                    System.out.println(solid.getiB().get(2));
+                    System.out.println(solid.getiB().get(3));
+
+                    Vertex l1 = solid.getvB().get(solid.getiB().get(0)).transform(viewToApply);
+                    Vertex l2 = solid.getvB().get(solid.getiB().get(1)).transform(viewToApply);
+                    Vertex l3 = solid.getvB().get(solid.getiB().get(2)).transform(viewToApply);
+                    Vertex l4 = solid.getvB().get(solid.getiB().get(3)).transform(viewToApply);
+
+                    lineRasterizer.rasterize(l1, l2);
+                    lineRasterizer.rasterize(l1, l3);
+                    lineRasterizer.rasterize(l1, l4);
+
+                    /*
+                    for (int i = 0; i < part.getCount();i++) {
+
+                        int indexL1 = startL;
+                        int indexL2 = startL + 1;
+
+                        Vertex l1 = solid.getvB().get(solid.getiB().get(0)).transform(viewToApply);
+                        Vertex l2 = solid.getvB().get(solid.getiB().get(1)).transform(viewToApply);
+                        Vertex l3 = solid.getvB().get(solid.getiB().get(2)).transform(viewToApply);
+                        Vertex l4 = solid.getvB().get(solid.getiB().get(3)).transform(viewToApply);
+
+
+                        lineRasterizer.rasterize(l1, l2);
+                        lineRasterizer.rasterize(l1, l3);
+                        lineRasterizer.rasterize(l1, l4);
+
+                        startL += 2;
+                    }
+                    */
+
                     break;
                 case LINES_STRIP:
                     // TODO
@@ -70,14 +101,8 @@ public class Renderer {
                         Vertex v2 = solid.getvB().get(solid.getiB().get(indexV2)).transform(viewToApply);
                         Vertex v3 = solid.getvB().get(solid.getiB().get(indexV3)).transform(viewToApply);
 
-/*
-                        Vertex v1 = solid.getvB().get(solid.getiB().get(indexV1));
-                        Vertex v2 = solid.getvB().get(solid.getiB().get(indexV2));
-                        Vertex v3 = solid.getvB().get(solid.getiB().get(indexV3));
-*/
 
                         triangleRasterizer.rasterize(v1, v2, v3,wireframeCheck);
-                        //triangleRasterizer.rasterizeWireframe(v1, v2, v3);
                     }
 
                     break;

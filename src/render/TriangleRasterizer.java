@@ -23,39 +23,6 @@ public class TriangleRasterizer {
         this.shader = shader;
     }
 
-    public void rasterizeWireframe(Vertex v1, Vertex v2, Vertex v3) {
-        vertex1 = v1;
-        vertex2 = v2;
-        vertex3 = v3;
-
-        //Uprava dat
-        Vec3D a = doMath(vertex1);
-        Vec3D b = doMath(vertex2);
-        Vec3D c = doMath(vertex3);
-
-        //Vykreslení linií
-        if (
-                        a.getX() > 0 &&
-                        a.getX() < width &&
-                        a.getY() > 0 &&
-                        a.getY() < height &&
-
-                        b.getX() > 0 &&
-                        b.getX() < width &&
-                        b.getY() > 0 &&
-                        b.getY() < height &&
-
-                        c.getX() > 0 &&
-                        c.getX() < width &&
-                        c.getY() > 0 &&
-                        c.getY() < height
-        ) {
-            zBuffer.getiBuffer().getGraphics().setColor(new Color(255, 0, 0));
-            zBuffer.getiBuffer().getGraphics().drawLine((int) a.getX(), (int) a.getY(), (int) b.getX(), (int) b.getY());
-            zBuffer.getiBuffer().getGraphics().drawLine((int) b.getX(), (int) b.getY(), (int) c.getX(), (int) c.getY());
-            zBuffer.getiBuffer().getGraphics().drawLine((int) c.getX(), (int) c.getY(), (int) a.getX(), (int) a.getY());
-        }
-    }
 
     public void rasterize(Vertex v1, Vertex v2, Vertex v3, boolean wireFrame) {
 
@@ -107,9 +74,29 @@ public class TriangleRasterizer {
         }
 
         if (wireFrame) {
-            zBuffer.getiBuffer().getGraphics().drawLine((int) a.getX(), (int) a.getY(), (int) b.getX(), (int) b.getY());
-            zBuffer.getiBuffer().getGraphics().drawLine((int) b.getX(), (int) b.getY(), (int) c.getX(), (int) c.getY());
-            zBuffer.getiBuffer().getGraphics().drawLine((int) c.getX(), (int) c.getY(), (int) a.getX(), (int) a.getY());
+            if (true //Možnost přepnutí na jednoduché ořezání
+                    /*
+                    a.getX() > 0 &&
+                            a.getX() < width &&
+                            a.getY() > 0 &&
+                            a.getY() < height &&
+
+                            b.getX() > 0 &&
+                            b.getX() < width &&
+                            b.getY() > 0 &&
+                            b.getY() < height &&
+
+                            c.getX() > 0 &&
+                            c.getX() < width &&
+                            c.getY() > 0 &&
+                            c.getY() < height
+                            */
+
+            ) {
+                zBuffer.getiBuffer().getGraphics().drawLine((int) a.getX(), (int) a.getY(), (int) b.getX(), (int) b.getY());
+                zBuffer.getiBuffer().getGraphics().drawLine((int) b.getX(), (int) b.getY(), (int) c.getX(), (int) c.getY());
+                zBuffer.getiBuffer().getGraphics().drawLine((int) c.getX(), (int) c.getY(), (int) a.getX(), (int) a.getY());
+            }
         }else {
 
             // Od A po B, interpolace
@@ -141,7 +128,7 @@ public class TriangleRasterizer {
 
                     if (x > 0 && x < width && y > 0 && y < height) {
                         //zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
-                        zBuffer.drawPixelWithTest(x, y, result.getZ(), new Col(255, 0, 0));
+                        zBuffer.drawPixelWithTest(x, y, result.getZ(), v1.getColor());
                     }
                 }
 
@@ -176,7 +163,7 @@ public class TriangleRasterizer {
                     Vertex v = v23.mul(1 - t).add(v13.mul(t));
                     if (x > 0 && x < width && y > 0 && y < height) {
                         //zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
-                        zBuffer.drawPixelWithTest(x, y, result.getZ(), new Col(255, 0, 0));
+                        zBuffer.drawPixelWithTest(x, y, result.getZ(), v1.getColor());
                     }
                 }
             }
@@ -193,5 +180,9 @@ public class TriangleRasterizer {
                 .add(new Vec3D(1, 1, 0))
                 .mul(new Vec3D((width - 1) / 2., (height - 1) / 2., 1));
         return response;
+    }
+
+    public ZBufferVisibility getzBuffer(){
+        return zBuffer;
     }
 }
