@@ -215,6 +215,13 @@ public class Controller3D implements Controller {
                 }
                 // - /Změna Wireframe modu
 
+                // - Změna Gradient modu
+                if (e.getKeyCode() == KeyEvent.VK_V) {
+
+                    renderer.changeGradient();
+                }
+                // - /Změna Gradient modu
+
                 if (e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
                     for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
                         solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());

@@ -18,11 +18,13 @@ public class Renderer {
     private Mat4 space;
     private Mat4 ortProjection = new Mat4OrthoRH(1, 1, 0, 10);
     private Mat4 geoProjection = new Mat4Identity();
+
     private boolean geoCheck = true;
-
-    private boolean wireframeCheck = true;
-
     private Mat4 projection = new Mat4Identity();
+    private boolean wireframeCheck = true;
+    private boolean gradientCheck = false;
+
+
     private Mat4 viewToApply;
 
     public Renderer(TriangleRasterizer triangleRasterizer, LineRasterizer lineRasterizer) {
@@ -102,7 +104,7 @@ public class Renderer {
                         Vertex v3 = solid.getvB().get(solid.getiB().get(indexV3)).transform(viewToApply);
 
 
-                        triangleRasterizer.rasterize(v1, v2, v3,wireframeCheck);
+                        triangleRasterizer.rasterize(v1, v2, v3,wireframeCheck,gradientCheck);
                     }
 
                     break;
@@ -157,5 +159,9 @@ public class Renderer {
 
     public void changeWireframe() {
         wireframeCheck = !wireframeCheck;
+    }
+
+    public void changeGradient() {
+        gradientCheck = !gradientCheck;
     }
 }

@@ -24,7 +24,7 @@ public class TriangleRasterizer {
     }
 
 
-    public void rasterize(Vertex v1, Vertex v2, Vertex v3, boolean wireFrame) {
+    public void rasterize(Vertex v1, Vertex v2, Vertex v3, boolean wireFrame, boolean gradient) {
 
         vertex1 = v1;
         vertex2 = v2;
@@ -97,7 +97,7 @@ public class TriangleRasterizer {
                 zBuffer.getiBuffer().getGraphics().drawLine((int) b.getX(), (int) b.getY(), (int) c.getX(), (int) c.getY());
                 zBuffer.getiBuffer().getGraphics().drawLine((int) c.getX(), (int) c.getY(), (int) a.getX(), (int) a.getY());
             }
-        }else {
+        } else {
 
             // Od A po B, interpolace
             for (int y = (int) a.getY(); y < b.getY(); y++) {
@@ -127,8 +127,11 @@ public class TriangleRasterizer {
                     Vertex v = v12.mul(1 - t).add(v13.mul(t));
 
                     if (x > 0 && x < width && y > 0 && y < height) {
-                        //zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
-                        zBuffer.drawPixelWithTest(x, y, result.getZ(), v1.getColor());
+                        if (gradient) {
+                            zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
+                        } else {
+                            zBuffer.drawPixelWithTest(x, y, result.getZ(), v1.getColor());
+                        }
                     }
                 }
 
@@ -162,8 +165,11 @@ public class TriangleRasterizer {
                     Vec3D result = point23.mul(1 - t).add(point13.mul(t));
                     Vertex v = v23.mul(1 - t).add(v13.mul(t));
                     if (x > 0 && x < width && y > 0 && y < height) {
-                        //zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
-                        zBuffer.drawPixelWithTest(x, y, result.getZ(), v1.getColor());
+                        if (gradient) {
+                            zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
+                        } else {
+                            zBuffer.drawPixelWithTest(x, y, result.getZ(), v1.getColor());
+                        }
                     }
                 }
             }
@@ -182,7 +188,7 @@ public class TriangleRasterizer {
         return response;
     }
 
-    public ZBufferVisibility getzBuffer(){
+    public ZBufferVisibility getzBuffer() {
         return zBuffer;
     }
 }
