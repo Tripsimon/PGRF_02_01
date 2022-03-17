@@ -1,9 +1,8 @@
 package model;
 
-import transforms.Col;
-import transforms.Mat4;
-import transforms.Point3D;
-import transforms.Vec2D;
+import transforms.*;
+
+import java.util.Optional;
 
 public class Vertex {
     private Point3D position;
@@ -18,7 +17,6 @@ public class Vertex {
     public Vertex(double x, double y, double z, Col color) {
         this.position = new Point3D(x, y, z);
         this.color = color;
-        // TODO: implementovat vhodně nastavení souřadnic do textury
         this.textCoords = new Vec2D(color.getR(), color.getB());
         this.one = 1;
     }
@@ -47,9 +45,17 @@ public class Vertex {
         return textCoords;
     }
 
-    // TODO: mul
     public Vertex mul(double d){
         return new Vertex(position.mul(d), color.mul(d), textCoords.mul(d));
+    }
+
+    public Optional<Vec3D> dehomogenize(){
+        return  position.dehomog();
+    }
+
+
+    public void setPosition(Point3D p){
+        this.position = p;
     }
 
     // TODO: add
@@ -73,4 +79,6 @@ public class Vertex {
         Vertex returnVer = new Vertex(position.mul(matrix),this.color,textCoords);
         return returnVer;
     }
+
+
 }

@@ -5,6 +5,7 @@ import model.Vertex;
 import solids.Solid;
 import transforms.Mat4;
 import transforms.Mat4Identity;
+import transforms.Mat4OrthoRH;
 
 import java.util.List;
 
@@ -15,6 +16,9 @@ public class Renderer {
     private Mat4 model;
     private Mat4 camera;
     private Mat4 space;
+    private Mat4 ortProjection = new Mat4OrthoRH(1,1,0,10);
+    private Mat4 geoProjection = new Mat4Identity();
+    private boolean geoCheck = false;
     private Mat4 projection = new Mat4Identity();
     private  Mat4 viewToApply;
 
@@ -42,7 +46,6 @@ public class Renderer {
 
                     Vertex v1p = solid.getvB().get(solid.getiB().get(0)).transform(viewToApply);
                     Vertex v2p = solid.getvB().get(solid.getiB().get(1)).transform(viewToApply);
-                    System.out.println();
                     lineRasterizer.rasterize(v1p,v2p);
                     break;
                 case LINES_STRIP:
@@ -58,19 +61,20 @@ public class Renderer {
                         int indexV3 = start + 2;
 
                         start += 3;
-/*
+
 
                         Vertex v1 = solid.getvB().get(solid.getiB().get(indexV1)).transform(viewToApply);
                         Vertex v2 = solid.getvB().get(solid.getiB().get(indexV2)).transform(viewToApply);
                         Vertex v3 = solid.getvB().get(solid.getiB().get(indexV3)).transform(viewToApply);
+
+/*
+                        Vertex v1 = solid.getvB().get(solid.getiB().get(indexV1));
+                        Vertex v2 = solid.getvB().get(solid.getiB().get(indexV2));
+                        Vertex v3 = solid.getvB().get(solid.getiB().get(indexV3));
 */
 
-                        Vertex v1 = solid.getvB().get(solid.getiB().get(indexV1)).transform(viewToApply);
-                        Vertex v2 = solid.getvB().get(solid.getiB().get(indexV2)).transform(viewToApply);
-                        Vertex v3 = solid.getvB().get(solid.getiB().get(indexV3)).transform(viewToApply);
-
-
                         triangleRasterizer.rasterize(v1, v2, v3);
+                        //triangleRasterizer.rasterizeWireframe(v1, v2, v3);
                     }
 
                     break;
@@ -111,5 +115,15 @@ public class Renderer {
 
     public void setProjection(Mat4 projection) {
         this.projection = projection;
+    }
+
+    public void changeProjection(){
+        if (geoCheck){
+            projection = ortProjection;
+            geoCheck = !geoCheck;
+        }else {
+            projection = geoProjection;
+            geoCheck = !geoCheck;
+        }
     }
 }

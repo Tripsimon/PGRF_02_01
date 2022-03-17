@@ -37,7 +37,6 @@ public class Controller3D implements Controller {
     private LineRasterizer lineRasterizer;
 
     private List<Solid> solidList;
-    private Triangle test;
 
     //Držák pozice myšy (Pro otáčení
     private int mouseLastX = 0;
@@ -49,10 +48,25 @@ public class Controller3D implements Controller {
         initListeners(panel);
 
 
+
         solidList = new ArrayList<>();
-        test = new Triangle();
+        Triangle test = new Triangle(
+                new Vertex(-0.5,0, 0.5, new Col(0., 0, 1)),
+                new Vertex(0.5,0, 0.5, new Col(1., 0, 0)),
+                new Vertex(0,0.5, 0.5, new Col(0., 1, 0))
+
+        );
+
+        Triangle test2 = new Triangle(
+                new Vertex(-0.5,0, 0.5, new Col(0., 0, 1)),
+                new Vertex(0.5,0, 0.5, new Col(1., 0, 0)),
+                new Vertex(0,-0.5, 0.5, new Col(0., 1, 0))
+
+        );
+
         Solid testLine = new Line(new Vertex(0,0,0,new Col(255,0,0)),new Vertex(5,0,0,new Col(255,0,0)));
         solidList.add(test);
+        solidList.add(test2);
         //solidList.add(testLine);
 
 
@@ -103,7 +117,7 @@ public class Controller3D implements Controller {
             @Override
             public void mouseDragged(MouseEvent e) { //Odposlouchávání pro pohnutí myší (Znázornění vygenerování)
 
-                //Otáčení kamery podle změny pozice myšy
+                // - Otáčení kamery
                 if ((e.getX() - mouseLastX) == -1) {
                     camera = camera.addAzimuth(Math.PI / 5000);
                 }
@@ -119,13 +133,16 @@ public class Controller3D implements Controller {
                 if ((e.getY() - mouseLastY) == 1) {
                     camera = camera.addZenith(-(Math.PI / 5000));
                 }
-
-                //Repaint plátna
-                redraw();
-
-                //Zaznamenání poslední pozice
                 mouseLastX = e.getX();
                 mouseLastY = e.getY();
+                // - /Otáčení kamery
+
+                // - Překreslení
+                redraw();
+                // - /Překreslení
+
+                //Zaznamenání poslední pozice
+
             }
 
 
@@ -137,7 +154,7 @@ public class Controller3D implements Controller {
             public void keyPressed(KeyEvent e) { //Adapter pro odposlouchávání
                 double step = 0.3; //Definice kroku
 
-                //Pohyb WASD
+                // - Pohyb WASD
                 if (e.getKeyCode() == KeyEvent.VK_A) {
                     camera = camera.left(step);
                 }
@@ -155,8 +172,47 @@ public class Controller3D implements Controller {
                     camera = camera.down(step);
 
                 }
+                // - /Pohyb WASD
 
+                // - ZOOM
+                if (e.getKeyCode() == KeyEvent.VK_Q) {
+                    camera =camera.forward(1);
+
+                }
+
+
+                if (e.getKeyCode() == KeyEvent.VK_E) {
+                    camera =camera.backward(step);
+
+                }
+                // - /ZOOM
+
+
+                // - Změna Projekcí
+                if (e.getKeyCode() == KeyEvent.VK_X) {
+
+                    renderer.changeProjection();
+                }
+                // - /Změna Projekcí
+
+                if (e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
+                    System.out.println(solidList.get(0).getvB().get(0));
+                    System.out.println(solidList.get(0).getvB().get(0).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
+                    solidList.get(0).getvB().get(0).setPosition(solidList.get(0).getvB().get(0).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
+                    solidList.get(0).getvB().get(1).setPosition(solidList.get(0).getvB().get(1).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
+                    solidList.get(0).getvB().get(2).setPosition(solidList.get(0).getvB().get(2).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
+                    System.out.println(solidList.get(0).getvB().get(0));
+                    System.out.println(solidList.get(0).getvB().get(0).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
+                    solidList.get(0).getvB().get(0).setPosition(solidList.get(0).getvB().get(0).transform(new Mat4Transl(0.2, 0, 0)).getPosition());
+                }
+
+
+                // - Překreslení
                 redraw();
+                // - /Překreslení
             }
 
 

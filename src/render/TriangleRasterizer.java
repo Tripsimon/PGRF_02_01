@@ -23,6 +23,22 @@ public class TriangleRasterizer {
         this.shader = shader;
     }
 
+    public void rasterizeWireframe(Vertex v1, Vertex v2, Vertex v3){
+        vertex1 = v1;
+        vertex2 = v2;
+        vertex3 = v3;
+
+        //Uprava dat
+        Vec3D a = doMath(vertex1);
+        Vec3D b = doMath(vertex2);
+        Vec3D c = doMath(vertex3);
+
+        //Vykreslení linií
+        zBuffer.getiBuffer().getGraphics().setColor(new Color(255,0,0));
+        zBuffer.getiBuffer().getGraphics().drawLine((int) a.getX(), (int) a.getY(), (int) b.getX(), (int) b.getY());
+        zBuffer.getiBuffer().getGraphics().drawLine((int) b.getX(), (int) b.getY(), (int) c.getX(), (int) c.getY());
+        zBuffer.getiBuffer().getGraphics().drawLine((int) c.getX(), (int) c.getY(), (int) a.getX(), (int) a.getY());
+    }
 
     public void rasterize(Vertex v1, Vertex v2, Vertex v3) {
 
@@ -36,7 +52,7 @@ public class TriangleRasterizer {
         Vec3D c = doMath(vertex3);
 
         //Vykreslení linií
-        zBuffer.getiBuffer().getGraphics().setColor(new Color(0xFFFF00));
+        zBuffer.getiBuffer().getGraphics().setColor(new Color(255,0,0));
         zBuffer.getiBuffer().getGraphics().drawLine((int) a.getX(), (int) a.getY(), (int) b.getX(), (int) b.getY());
         zBuffer.getiBuffer().getGraphics().drawLine((int) b.getX(), (int) b.getY(), (int) c.getX(), (int) c.getY());
         zBuffer.getiBuffer().getGraphics().drawLine((int) c.getX(), (int) c.getY(), (int) a.getX(), (int) a.getY());
@@ -76,14 +92,25 @@ public class TriangleRasterizer {
             b = vecHelp;
         }
 
+        System.out.println(a);
+        System.out.println(b);
+        System.out.println(c);
+
 
 
         // Od A po B, interpolace
         for (int y = (int) a.getY(); y < b.getY(); y++) {
+
             double s1 = (y - a.getY()) / (b.getY() - a.getY());
             double s2 = (y - a.getY()) / (c.getY() - a.getY());
             int x1 = (int) (a.getX() * (1 - s1) + b.getX() * s1);
             int x2 = (int) (a.getX() * (1 - s2) + c.getX() * s2);
+
+            if (x1 > x2){
+                int help = x1;
+                x1 = x2;
+                x2 = help;
+            }
 
             Vec3D point12 = a.mul(1 - s1).add(a.mul(s1));
             Vec3D point13 = a.mul(1 - s1).add(c.mul(s1));
@@ -91,12 +118,15 @@ public class TriangleRasterizer {
             Vertex v12 = v1.mul(1 - s1).add(v2.mul(s1));
             Vertex v13 = v1.mul(1 - s2).add(v3.mul(s2));
 
+
             for (int x = x1; x < x2; x++) {
+
                 double t = (x - x1) / (double) (x2 - x1);
                 Vec3D result = point12.mul(1 - t).add(point13.mul(t));
                 Vertex v = v12.mul(1 - t).add(v13.mul(t));
-                //zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
-                zBuffer.drawPixelWithTest(x, y, result.getZ(), new Col(255,0,0));
+
+                zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
+                //zBuffer.drawPixelWithTest(x, y, result.getZ(), new Col(255,0,0));
             }
 
 
@@ -105,11 +135,18 @@ public class TriangleRasterizer {
 
         // Od B po C, interpolace
         for (int y = (int) b.getY(); y < c.getY(); y++) {
+
             double s1 = (y - b.getY()) / (c.getY() - b.getY());
             double s2 = (y - a.getY()) / (c.getY() - a.getY());
 
             int x1 = (int) (b.getX() * (1 - s1) + c.getX() * s1);
             int x2 = (int) (a.getX() * (1 - s2) + c.getX() * s2);
+
+            if (x1 > x2){
+                int help = x1;
+                x1 = x2;
+                x2 = help;
+            }
 
             Vec3D point23 = b.mul(1 - s1).add(c.mul(s1));
             Vec3D point13 = a.mul(1 - s1).add(c.mul(s1));
@@ -117,11 +154,12 @@ public class TriangleRasterizer {
             Vertex v23 = v2.mul(1 - s1).add(v2.mul(s1));
             Vertex v13 = v1.mul(1 - s2).add(v3.mul(s2));
             for (int x = x1; x < x2; x++) {
+
                 double t = (x - x1) / (double) (x2 - x1);
                 Vec3D result = point23.mul(1 - t).add(point13.mul(t));
                 Vertex v = v23.mul(1 - t).add(v13.mul(t));
-                //zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
-                zBuffer.drawPixelWithTest(x, y, result.getZ(), new Col(255,0,0));
+                zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
+                //zBuffer.drawPixelWithTest(x, y, result.getZ(), new Col(255,0,0));
             }
 
 
