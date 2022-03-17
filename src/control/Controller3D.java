@@ -61,11 +61,24 @@ public class Controller3D implements Controller {
         );
 
         Axis osa = new Axis();
-        Cube kocka = new Cube();
+        Cube krychle = new Cube();
+        Spike pyramida = new Spike();
 
-        solidList.add(kocka);
+        for (int i = 0; i < pyramida.getvB().size(); i++) {
+            pyramida.getvB().get(i).setPosition(pyramida.getvB().get(i).transform(new Mat4Transl(2, 0, 0)).getPosition());
+        }
+
+        Block kvadr = new Block();
+
+        for (int i = 0; i < kvadr.getvB().size(); i++) {
+            kvadr.getvB().get(i).setPosition(kvadr.getvB().get(i).transform(new Mat4Transl(0, 2, 0)).getPosition());
+        }
+
+        solidList.add(krychle);
+        solidList.add(pyramida);
+        solidList.add(kvadr);
         solidList.add(osa);
-        //solidList.add(test);
+
         //solidList.add(test2);
         //solidList.add(testLine);
 

@@ -1,15 +1,8 @@
 package render;
 
 import model.Vertex;
-import raster.Raster;
 import raster.ZBufferVisibility;
-import solids.Line;
-import transforms.Col;
-import transforms.Point3D;
 import transforms.Vec3D;
-
-import java.awt.*;
-import java.util.Arrays;
 
 //Extendování (dědění) abstraktní třídy LineRasterizer
 public class LineRasterizer {

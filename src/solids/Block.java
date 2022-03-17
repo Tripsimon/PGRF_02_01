@@ -1,21 +1,22 @@
 package solids;
 
+
 import model.Part;
 import model.TopologyType;
 import model.Vertex;
 import transforms.Col;
 
-public class Cube extends Solid {
-    public Cube() {
-        getvB().add(new Vertex(0, 0, 0, new Col(255,0,255)));
-        getvB().add(new Vertex(0.5, 0, 0, new Col(255,0,255)));
-        getvB().add(new Vertex(0, 0.5, 0, new Col(255,0,255)));
-        getvB().add(new Vertex(0.5, 0.5, 0, new Col(255,0,255)));
+public class Block extends Solid {
+    public Block() {
+        getvB().add(new Vertex(0, 0, 0, new Col(0,255,255)));
+        getvB().add(new Vertex(0.5, 0, 0, new Col(0,255,255)));
+        getvB().add(new Vertex(0, 1, 0, new Col(0,255,255)));
+        getvB().add(new Vertex(0.5, 1, 0, new Col(0,255,255)));
 
-        getvB().add(new Vertex(0, 0, 0.5, new Col(255,0,255)));
-        getvB().add(new Vertex(0.5, 0, 0.5, new Col(255,0,255)));
-        getvB().add(new Vertex(0, 0.5, 0.5, new Col(255,0,255)));
-        getvB().add(new Vertex(0.5, 0.5, 0.5, new Col(255,0,255)));
+        getvB().add(new Vertex(0, 0, 0.5, new Col(0,255,255)));
+        getvB().add(new Vertex(0.5, 0, 0.5, new Col(0,255,255)));
+        getvB().add(new Vertex(0, 1, 0.5, new Col(0,255,255)));
+        getvB().add(new Vertex(0.5, 1, 0.5, new Col(0,255,255)));
 
         //spodek
         getiB().add(0);
