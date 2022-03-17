@@ -16,11 +16,14 @@ public class Renderer {
     private Mat4 model;
     private Mat4 camera;
     private Mat4 space;
-    private Mat4 ortProjection = new Mat4OrthoRH(1,1,0,10);
+    private Mat4 ortProjection = new Mat4OrthoRH(1, 1, 0, 10);
     private Mat4 geoProjection = new Mat4Identity();
-    private boolean geoCheck = false;
+    private boolean geoCheck = true;
+
+    private boolean wireframeCheck = true;
+
     private Mat4 projection = new Mat4Identity();
-    private  Mat4 viewToApply;
+    private Mat4 viewToApply;
 
     public Renderer(TriangleRasterizer triangleRasterizer, LineRasterizer lineRasterizer) {
         this.triangleRasterizer = triangleRasterizer;
@@ -37,7 +40,7 @@ public class Renderer {
     public void render(Solid solid) {
         // TODO: transformace
 
-        for (Part part:solid.getpB()) {
+        for (Part part : solid.getpB()) {
             switch (part.getType()) {
                 case POINTS:
                     // TODO
@@ -46,7 +49,7 @@ public class Renderer {
 
                     Vertex v1p = solid.getvB().get(solid.getiB().get(0)).transform(viewToApply);
                     Vertex v2p = solid.getvB().get(solid.getiB().get(1)).transform(viewToApply);
-                    lineRasterizer.rasterize(v1p,v2p);
+                    lineRasterizer.rasterize(v1p, v2p);
                     break;
                 case LINES_STRIP:
                     // TODO
@@ -73,7 +76,7 @@ public class Renderer {
                         Vertex v3 = solid.getvB().get(solid.getiB().get(indexV3));
 */
 
-                        triangleRasterizer.rasterize(v1, v2, v3);
+                        triangleRasterizer.rasterize(v1, v2, v3,wireframeCheck);
                         //triangleRasterizer.rasterizeWireframe(v1, v2, v3);
                     }
 
@@ -117,13 +120,17 @@ public class Renderer {
         this.projection = projection;
     }
 
-    public void changeProjection(){
-        if (geoCheck){
+    public void changeProjection() {
+        if (geoCheck) {
             projection = ortProjection;
             geoCheck = !geoCheck;
-        }else {
+        } else {
             projection = geoProjection;
             geoCheck = !geoCheck;
         }
+    }
+
+    public void changeWireframe() {
+        wireframeCheck = !wireframeCheck;
     }
 }

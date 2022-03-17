@@ -9,10 +9,7 @@ import raster.ZBufferVisibility;
 import render.LineRasterizer;
 import render.Renderer;
 import render.TriangleRasterizer;
-import solids.Arrow;
-import solids.Line;
-import solids.Solid;
-import solids.Triangle;
+import solids.*;
 import transforms.*;
 import view.Panel;
 
@@ -48,25 +45,26 @@ public class Controller3D implements Controller {
         initListeners(panel);
 
 
-
         solidList = new ArrayList<>();
         Triangle test = new Triangle(
-                new Vertex(-0.5,0, 0.5, new Col(0., 0, 1)),
-                new Vertex(0.5,0, 0.5, new Col(1., 0, 0)),
-                new Vertex(0,0.5, 0.5, new Col(0., 1, 0))
+                new Vertex(-0.5, 0, 0.5, new Col(0., 0, 1)),
+                new Vertex(0.5, 0, 0.5, new Col(1., 0, 0)),
+                new Vertex(0, 0.5, 0.5, new Col(0., 1, 0))
 
         );
 
         Triangle test2 = new Triangle(
-                new Vertex(-0.5,0, 0.5, new Col(0., 0, 1)),
-                new Vertex(0.5,0, 0.5, new Col(1., 0, 0)),
-                new Vertex(0,-0.5, 0.5, new Col(0., 1, 0))
+                new Vertex(-0.5, 0, 0.5, new Col(0., 0, 1)),
+                new Vertex(0.5, 0, 0.5, new Col(1., 0, 0)),
+                new Vertex(0, -0.5, 0.5, new Col(0., 1, 0))
 
         );
 
-        Solid testLine = new Line(new Vertex(0,0,0,new Col(255,0,0)),new Vertex(5,0,0,new Col(255,0,0)));
-        solidList.add(test);
-        solidList.add(test2);
+
+        Cube kocka = new Cube();
+        //solidList.add(kocka);
+        //solidList.add(test);
+        //solidList.add(test2);
         //solidList.add(testLine);
 
 
@@ -79,7 +77,7 @@ public class Controller3D implements Controller {
 
         //Kamera
         camera = new Camera()
-                .withPosition(new Vec3D(15, 0, 0))
+                .withPosition(new Vec3D(15, 1, 1))
                 .withAzimuth(Math.PI)
                 .withZenith(0)
                 .withFirstPerson(true);
@@ -99,7 +97,7 @@ public class Controller3D implements Controller {
 
 
         //Renderer
-        renderer = new Renderer(triangleRasterizer,lineRasterizer);
+        renderer = new Renderer(triangleRasterizer, lineRasterizer);
     }
 
     @Override
@@ -176,13 +174,13 @@ public class Controller3D implements Controller {
 
                 // - ZOOM
                 if (e.getKeyCode() == KeyEvent.VK_Q) {
-                    camera =camera.forward(1);
+                    camera = camera.forward(1);
 
                 }
 
 
                 if (e.getKeyCode() == KeyEvent.VK_E) {
-                    camera =camera.backward(step);
+                    camera = camera.backward(step);
 
                 }
                 // - /ZOOM
@@ -194,6 +192,13 @@ public class Controller3D implements Controller {
                     renderer.changeProjection();
                 }
                 // - /Změna Projekcí
+
+                // - Změna Wireframe modu
+                if (e.getKeyCode() == KeyEvent.VK_C) {
+
+                    renderer.changeWireframe();
+                }
+                // - /Změna Wireframe modu
 
                 if (e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
                     System.out.println(solidList.get(0).getvB().get(0));
