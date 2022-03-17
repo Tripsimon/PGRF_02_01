@@ -15,6 +15,6 @@ public class Line extends Solid {
         getiB().add(0);
         getiB().add(1);
 
-        getpB().add(new Part(TopologyType.TRIANGLES, 0, 1));
+        getpB().add(new Part(TopologyType.LINES, 0, 1));
     }
 }

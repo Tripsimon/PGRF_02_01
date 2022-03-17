@@ -6,9 +6,11 @@ import model.ShaderInterpolation;
 import model.Vertex;
 import raster.ImageBuffer;
 import raster.ZBufferVisibility;
+import render.LineRasterizer;
 import render.Renderer;
 import render.TriangleRasterizer;
 import solids.Arrow;
+import solids.Line;
 import solids.Solid;
 import solids.Triangle;
 import transforms.*;
@@ -32,6 +34,7 @@ public class Controller3D implements Controller {
 
     private Renderer renderer;
     private TriangleRasterizer triangleRasterizer;
+    private LineRasterizer lineRasterizer;
 
     private List<Solid> solidList;
     private Triangle test;
@@ -48,7 +51,9 @@ public class Controller3D implements Controller {
 
         solidList = new ArrayList<>();
         test = new Triangle();
+        Solid testLine = new Line(new Vertex(0,0,0,new Col(255,0,0)),new Vertex(5,0,0,new Col(255,0,0)));
         solidList.add(test);
+        //solidList.add(testLine);
 
 
         redraw();
@@ -76,9 +81,11 @@ public class Controller3D implements Controller {
 
         //Rasterizer
         triangleRasterizer = new TriangleRasterizer(zBufferVisibility, shaderInterpolation);
+        lineRasterizer = new LineRasterizer(zBufferVisibility);
+
 
         //Renderer
-        renderer = new Renderer(triangleRasterizer);
+        renderer = new Renderer(triangleRasterizer,lineRasterizer);
     }
 
     @Override

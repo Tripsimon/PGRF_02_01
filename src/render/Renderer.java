@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Renderer {
     private TriangleRasterizer triangleRasterizer;
+    private LineRasterizer lineRasterizer;
 
     private Mat4 model;
     private Mat4 camera;
@@ -17,8 +18,9 @@ public class Renderer {
     private Mat4 projection = new Mat4Identity();
     private  Mat4 viewToApply;
 
-    public Renderer(TriangleRasterizer triangleRasterizer) {
+    public Renderer(TriangleRasterizer triangleRasterizer, LineRasterizer lineRasterizer) {
         this.triangleRasterizer = triangleRasterizer;
+        this.lineRasterizer = lineRasterizer;
     }
 
     public void renderScene(List<Solid> scene) {
@@ -37,7 +39,11 @@ public class Renderer {
                     // TODO
                     break;
                 case LINES:
-                    // TODO
+
+                    Vertex v1p = solid.getvB().get(solid.getiB().get(0)).transform(viewToApply);
+                    Vertex v2p = solid.getvB().get(solid.getiB().get(1)).transform(viewToApply);
+                    System.out.println();
+                    lineRasterizer.rasterize(v1p,v2p);
                     break;
                 case LINES_STRIP:
                     // TODO
