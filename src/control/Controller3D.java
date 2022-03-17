@@ -23,21 +23,26 @@ import java.util.concurrent.TimeUnit;
 
 public class Controller3D implements Controller {
 
+    //Deklarace proměných
     private final Panel panel;
 
     private int width, height;
     private boolean pressed = false;
     private int ox, oy;
 
+    //Kamera
     private Camera camera;
+
+    //Zbuffer
     private ZBufferVisibility zBufferVisibility;
 
+    //Renderery
     private Renderer renderer;
     private TriangleRasterizer triangleRasterizer;
     private LineRasterizer lineRasterizer;
 
+    //Seznam těles
     private List<Solid> solidList;
-
     private int chosenSolid = 0;
 
     //Držák pozice myšy (Pro otáčení
@@ -50,39 +55,7 @@ public class Controller3D implements Controller {
         initListeners(panel);
 
 
-        solidList = new ArrayList<>();
-        Triangle test = new Triangle(
-                new Vertex(-0.5, 0, 0.5, new Col(0., 0, 1)),
-                new Vertex(0.5, 0, 0.5, new Col(1., 0, 0)),
-                new Vertex(0, 0.5, 0.5, new Col(0., 1, 0))
 
-        );
-
-        Triangle test2 = new Triangle(
-                new Vertex(-0.5, 0, 0.5, new Col(0., 0, 1)),
-                new Vertex(0.5, 0, 0.5, new Col(1., 0, 0)),
-                new Vertex(0, -0.5, 0.5, new Col(0., 1, 0))
-
-        );
-
-        Axis osa = new Axis();
-        Cube krychle = new Cube();
-        Spike pyramida = new Spike();
-
-        for (int i = 0; i < pyramida.getvB().size(); i++) {
-            pyramida.getvB().get(i).setPosition(pyramida.getvB().get(i).transform(new Mat4Transl(2, 0, 0)).getPosition());
-        }
-
-        Block kvadr = new Block();
-
-        for (int i = 0; i < kvadr.getvB().size(); i++) {
-            kvadr.getvB().get(i).setPosition(kvadr.getvB().get(i).transform(new Mat4Transl(0, 2, 0)).getPosition());
-        }
-
-        solidList.add(krychle);
-        solidList.add(pyramida);
-        solidList.add(kvadr);
-        solidList.add(osa);
 
         //solidList.add(test2);
         //solidList.add(testLine);
@@ -104,21 +77,36 @@ public class Controller3D implements Controller {
                 .withFirstPerson(true);
 
         //Shader
-        Shader shaderFullColor = v -> {
-            return new Col(0, 1.0, 0);
-        };
-
         Shader shaderInterpolation = v -> {
             return v.getColor();
         };
 
-        //Rasterizer
+        //Rasterizéry
         triangleRasterizer = new TriangleRasterizer(zBufferVisibility, shaderInterpolation);
         lineRasterizer = new LineRasterizer(zBufferVisibility);
-
-
-        //Renderer
         renderer = new Renderer(triangleRasterizer, lineRasterizer);
+
+        //Instance a přesun solidů
+        solidList = new ArrayList<>();
+        Axis osa = new Axis();
+        Cube krychle = new Cube();
+        Spike pyramida = new Spike();
+
+        for (int i = 0; i < pyramida.getvB().size(); i++) {
+            pyramida.getvB().get(i).setPosition(pyramida.getvB().get(i).transform(new Mat4Transl(2, 0, 0)).getPosition());
+        }
+
+        Block kvadr = new Block();
+
+        for (int i = 0; i < kvadr.getvB().size(); i++) {
+            kvadr.getvB().get(i).setPosition(kvadr.getvB().get(i).transform(new Mat4Transl(0, 2, 0)).getPosition());
+        }
+
+        //Přidání solidů
+        solidList.add(krychle);
+        solidList.add(pyramida);
+        solidList.add(kvadr);
+        solidList.add(osa);
     }
 
     @Override
@@ -159,9 +147,6 @@ public class Controller3D implements Controller {
                 // - Překreslení
                 redraw();
                 // - /Překreslení
-
-                //Zaznamenání poslední pozice
-
             }
 
 
@@ -282,7 +267,9 @@ public class Controller3D implements Controller {
                         solidList.get(chosenSolid).getvB().get(i).setPosition(solidList.get(chosenSolid).getvB().get(i).transform(new Mat4Transl(0, 0, 0.2)).getPosition());
                     }
                 }
+                // - /Translace
 
+                // - Animace
                 if (e.getKeyCode() == KeyEvent.VK_MULTIPLY) {
                     for (int k = 0; k < 10; k++) {
                         for (int i = 0; i <solidList.get(chosenSolid).getvB().size() ; i++) {
@@ -297,7 +284,9 @@ public class Controller3D implements Controller {
                         }
                     }
                 }
+                // - /Animace
 
+                // - Výběr tělesa
                 if (e.getKeyCode() == KeyEvent.VK_NUMPAD0) {
 
                     if(chosenSolid == 2){
@@ -315,12 +304,8 @@ public class Controller3D implements Controller {
                             System.out.println("Vybráno: Kvádr");
                         }
                     }
-                    System.out.println(chosenSolid);
-
                 }
-                redraw();
-
-                // /- Translace
+                // - /Výběr tělesa
 
                 // - Překreslení
                 redraw();
@@ -331,7 +316,7 @@ public class Controller3D implements Controller {
         });
     }
 
-    private void redraw() {
+    private void redraw() { // Překreslení plátna
         panel.clear();
         width = panel.getRaster().getWidth();
         height = panel.getRaster().getHeight();
@@ -348,11 +333,4 @@ public class Controller3D implements Controller {
 
         panel.repaint();
     }
-
-    private void hardClear() {
-        panel.clear();
-        initObjects(panel.getRaster());
-    }
-
-
 }

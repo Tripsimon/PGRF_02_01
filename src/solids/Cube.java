@@ -7,6 +7,7 @@ import transforms.Col;
 
 public class Cube extends Solid {
     public Cube() {
+        //Vertexy
         getvB().add(new Vertex(0, 0, 0, new Col(255,0,255)));
         getvB().add(new Vertex(0.5, 0, 0, new Col(255,0,255)));
         getvB().add(new Vertex(0, 0.5, 0, new Col(255,0,255)));
@@ -17,7 +18,8 @@ public class Cube extends Solid {
         getvB().add(new Vertex(0, 0.5, 0.5, new Col(255,0,255)));
         getvB().add(new Vertex(0.5, 0.5, 0.5, new Col(255,0,255)));
 
-        //spodek
+        //Indexy
+        //Spodní část
         getiB().add(0);
         getiB().add(1);
         getiB().add(2);
@@ -26,7 +28,7 @@ public class Cube extends Solid {
         getiB().add(2);
 
 
-        //levá
+        //Levá část
         getiB().add(0);
         getiB().add(1);
         getiB().add(4);
@@ -34,7 +36,7 @@ public class Cube extends Solid {
         getiB().add(4);
         getiB().add(1);
 
-        //zadní
+        //Pozadí
         getiB().add(0);
         getiB().add(2);
         getiB().add(4);
@@ -42,7 +44,7 @@ public class Cube extends Solid {
         getiB().add(2);
         getiB().add(6);
 
-        //Předek
+        //Popředí
         getiB().add(1);
         getiB().add(3);
         getiB().add(5);
@@ -50,7 +52,7 @@ public class Cube extends Solid {
         getiB().add(3);
         getiB().add(5);
 
-        //Pravá
+        //Pravá část
         getiB().add(2);
         getiB().add(3);
         getiB().add(6);
@@ -60,7 +62,7 @@ public class Cube extends Solid {
         getiB().add(3);
 
 
-        //vršek
+        //Vrchní část
         getiB().add(4);
         getiB().add(5);
         getiB().add(6);
@@ -69,7 +71,7 @@ public class Cube extends Solid {
         getiB().add(5);
         getiB().add(6);
 
-
+        //Topologie
         getpB().add(new Part(TopologyType.TRIANGLES, 0, 12));
     }
 }

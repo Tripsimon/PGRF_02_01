@@ -30,15 +30,13 @@ public class TriangleRasterizer {
         vertex2 = v2;
         vertex3 = v3;
 
-        //Uprava dat
+        // - Úprava dat
         Vec3D a = doMath(vertex1);
         Vec3D b = doMath(vertex2);
         Vec3D c = doMath(vertex3);
+        // - /Úprava dat
 
-        //Vykreslení linií
-
-
-        //Ořezání
+        // - Ořezání
         if ((
                 (a.getX() > width - 1 || a.getX() < 0) &&
                         (b.getX() > width - 1 || b.getX() < 0) &&
@@ -50,11 +48,11 @@ public class TriangleRasterizer {
         )) {
             return;
         }
+        // - /Ořezání
 
-        //Seřazení
 
+        // - Seřazení
         Vec3D vecHelp;
-
         if (a.getY() >= b.getY()) {
             vecHelp = b;
             b = a;
@@ -72,9 +70,10 @@ public class TriangleRasterizer {
             c = b;
             b = vecHelp;
         }
+        // - /Seřazení
 
-        if (wireFrame) {
-            if (true //Možnost přepnutí na jednoduché ořezání
+        if (wireFrame) { //Kontrola Wireframe modu
+            if (true //Možnost přepnutí na jednoduché ořezání (V programu nepoužito)
                     /*
                     a.getX() > 0 &&
                             a.getX() < width &&
@@ -92,12 +91,12 @@ public class TriangleRasterizer {
                             c.getY() < height
                             */
 
-            ) {
+            ) {// Vykreslení hran ve wireframe modu
                 zBuffer.getiBuffer().getGraphics().drawLine((int) a.getX(), (int) a.getY(), (int) b.getX(), (int) b.getY());
                 zBuffer.getiBuffer().getGraphics().drawLine((int) b.getX(), (int) b.getY(), (int) c.getX(), (int) c.getY());
                 zBuffer.getiBuffer().getGraphics().drawLine((int) c.getX(), (int) c.getY(), (int) a.getX(), (int) a.getY());
             }
-        } else {
+        } else {//Vykreslení vybrarvení
 
             // Od A po B, interpolace
             for (int y = (int) a.getY(); y < b.getY(); y++) {
@@ -127,7 +126,7 @@ public class TriangleRasterizer {
                     Vertex v = v12.mul(1 - t).add(v13.mul(t));
 
                     if (x > 0 && x < width && y > 0 && y < height) {
-                        if (gradient) {
+                        if (gradient) { //Přepínáč pro gradient
                             zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
                         } else {
                             zBuffer.drawPixelWithTest(x, y, result.getZ(), v1.getColor());
@@ -165,7 +164,7 @@ public class TriangleRasterizer {
                     Vec3D result = point23.mul(1 - t).add(point13.mul(t));
                     Vertex v = v23.mul(1 - t).add(v13.mul(t));
                     if (x > 0 && x < width && y > 0 && y < height) {
-                        if (gradient) {
+                        if (gradient) {//Přepínáč pro gradient
                             zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
                         } else {
                             zBuffer.drawPixelWithTest(x, y, result.getZ(), v1.getColor());
@@ -180,7 +179,7 @@ public class TriangleRasterizer {
 
     }
 
-    private Vec3D doMath(Vertex v) {
+    private Vec3D doMath(Vertex v) { // Uprava vektorů
         Vec3D response = v.getPosition().ignoreW()
                 .mul(new Vec3D(1, -1, 1))
                 .add(new Vec3D(1, 1, 0))

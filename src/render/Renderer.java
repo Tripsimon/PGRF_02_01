@@ -40,19 +40,10 @@ public class Renderer {
     }
 
     public void render(Solid solid) {
-        // TODO: transformace
 
         for (Part part : solid.getpB()) {
-            switch (part.getType()) {
-                case POINTS:
-                    // TODO
-                    break;
+            switch (part.getType()) { //Rasterizace linií (Ve vlastním programu nakonec nepoužito)
                 case LINES:
-
-                    System.out.println(solid.getiB().get(0));
-                    System.out.println(solid.getiB().get(1));
-                    System.out.println(solid.getiB().get(2));
-                    System.out.println(solid.getiB().get(3));
 
                     Vertex l1 = solid.getvB().get(solid.getiB().get(0)).transform(viewToApply);
                     Vertex l2 = solid.getvB().get(solid.getiB().get(1)).transform(viewToApply);
@@ -62,32 +53,11 @@ public class Renderer {
                     lineRasterizer.rasterize(l1, l2);
                     lineRasterizer.rasterize(l1, l3);
                     lineRasterizer.rasterize(l1, l4);
-
-                    /*
-                    for (int i = 0; i < part.getCount();i++) {
-
-                        int indexL1 = startL;
-                        int indexL2 = startL + 1;
-
-                        Vertex l1 = solid.getvB().get(solid.getiB().get(0)).transform(viewToApply);
-                        Vertex l2 = solid.getvB().get(solid.getiB().get(1)).transform(viewToApply);
-                        Vertex l3 = solid.getvB().get(solid.getiB().get(2)).transform(viewToApply);
-                        Vertex l4 = solid.getvB().get(solid.getiB().get(3)).transform(viewToApply);
-
-
-                        lineRasterizer.rasterize(l1, l2);
-                        lineRasterizer.rasterize(l1, l3);
-                        lineRasterizer.rasterize(l1, l4);
-
-                        startL += 2;
-                    }
-                    */
-
                     break;
                 case LINES_STRIP:
                     // TODO
                     break;
-                case TRIANGLES:
+                case TRIANGLES: //Rasterizace trojuhelníků
 
                     int start = part.getStart();
 
@@ -98,7 +68,7 @@ public class Renderer {
 
                         start += 3;
 
-
+                        //Aplikování transformačních matic
                         Vertex v1 = solid.getvB().get(solid.getiB().get(indexV1)).transform(viewToApply);
                         Vertex v2 = solid.getvB().get(solid.getiB().get(indexV2)).transform(viewToApply);
                         Vertex v3 = solid.getvB().get(solid.getiB().get(indexV3)).transform(viewToApply);

@@ -7,19 +7,7 @@ import transforms.Col;
 
 public class Axis extends Solid {
     public Axis(){
-        /*
-        getvB().add(new Vertex(0, 0, 0, new Col(255,0,0)));
-        getvB().add(new Vertex(4, 0, 0, new Col(255,0,0)));
-        getvB().add(new Vertex(0, 4, 0, new Col(255,0,0)));
-        getvB().add(new Vertex(0, 0, 4, new Col(255,0,0)));
-
-        getiB().add(0);
-        getiB().add(1);
-        getiB().add(2);
-        getiB().add(3);
-
-        getpB().add(new Part(TopologyType.LINES, 0, 3));
-        */
+        // OSA
         getvB().add(new Vertex(0, -0.02, 0, new Col(255,0,0)));
         getvB().add(new Vertex(0, 0.02, 0, new Col(255,0,0)));
         getvB().add(new Vertex(1.5, 0, 0, new Col(255,0,0)));

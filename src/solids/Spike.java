@@ -7,14 +7,15 @@ import transforms.Col;
 
 public class Spike extends Solid {
     public Spike() {
+        //Vertexy
         getvB().add(new Vertex(0, 0, 0, new Col(255,255,0)));
         getvB().add(new Vertex(0.5, 0, 0, new Col(255,0,0)));
         getvB().add(new Vertex(0, 0.5, 0, new Col(0,255,0)));
         getvB().add(new Vertex(0.5, 0.5, 0, new Col(0,0,255)));
         getvB().add(new Vertex(0.25, 0.25, 1, new Col(255,255,255)));
 
-
-        //spodek
+        //Indexy
+        //Spodní Část
         getiB().add(0);
         getiB().add(1);
         getiB().add(2);
@@ -37,7 +38,7 @@ public class Spike extends Solid {
         getiB().add(0);
         getiB().add(4);
 
-
+        //Topologie
         getpB().add(new Part(TopologyType.TRIANGLES, 0, 6));
     }
 }
