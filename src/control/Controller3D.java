@@ -13,10 +13,13 @@ import solids.*;
 import transforms.*;
 import view.Panel;
 
+import javax.sound.midi.Soundbank;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
 
 public class Controller3D implements Controller {
 
@@ -34,6 +37,8 @@ public class Controller3D implements Controller {
     private LineRasterizer lineRasterizer;
 
     private List<Solid> solidList;
+
+    private int chosenSolid = 0;
 
     //Držák pozice myšy (Pro otáčení
     private int mouseLastX = 0;
@@ -89,6 +94,7 @@ public class Controller3D implements Controller {
     public void initObjects(ImageBuffer raster) {
         raster.setClearValue(new Col(0x101010));
         zBufferVisibility = new ZBufferVisibility(panel.getRaster());
+        Timer timer = new Timer();
 
         //Kamera
         camera = new Camera()
@@ -224,57 +230,93 @@ public class Controller3D implements Controller {
 
                 // - Translace
                 if (e.getKeyCode() == KeyEvent.VK_NUMPAD8) {
-                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
-                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
+                    for (int i = 0; i <solidList.get(chosenSolid).getvB().size() ; i++) {
+                        solidList.get(chosenSolid).getvB().get(i).setPosition(solidList.get(chosenSolid).getvB().get(i).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
                     }
 
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_NUMPAD5) {
-                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
-                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4Transl(0.2, 0, 0)).getPosition());
+                    for (int i = 0; i <solidList.get(chosenSolid).getvB().size() ; i++) {
+                        solidList.get(chosenSolid).getvB().get(i).setPosition(solidList.get(chosenSolid).getvB().get(i).transform(new Mat4Transl(0.2, 0, 0)).getPosition());
                     }
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_NUMPAD4) {
-                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
-                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4Transl(0, -0.2, 0)).getPosition());
+                    for (int i = 0; i <solidList.get(chosenSolid).getvB().size() ; i++) {
+                        solidList.get(chosenSolid).getvB().get(i).setPosition(solidList.get(chosenSolid).getvB().get(i).transform(new Mat4Transl(0, -0.2, 0)).getPosition());
                     }
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_NUMPAD6) {
-                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
-                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4Transl(0, 0.2, 0)).getPosition());
+                    for (int i = 0; i <solidList.get(chosenSolid).getvB().size() ; i++) {
+                        solidList.get(chosenSolid).getvB().get(i).setPosition(solidList.get(chosenSolid).getvB().get(i).transform(new Mat4Transl(0, 0.2, 0)).getPosition());
                     }
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_NUMPAD1) {
-                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
-                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4RotX(0.03)).getPosition());
+                    for (int i = 0; i <solidList.get(chosenSolid).getvB().size() ; i++) {
+                        solidList.get(chosenSolid).getvB().get(i).setPosition(solidList.get(chosenSolid).getvB().get(i).transform(new Mat4RotX(0.03)).getPosition());
                     }
                 }
                 if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
-                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
-                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4RotY(0.03)).getPosition());
+                    for (int i = 0; i <solidList.get(chosenSolid).getvB().size() ; i++) {
+                        solidList.get(chosenSolid).getvB().get(i).setPosition(solidList.get(chosenSolid).getvB().get(i).transform(new Mat4RotY(0.03)).getPosition());
                     }
                 }
                 if (e.getKeyCode() == KeyEvent.VK_NUMPAD3) {
-                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
-                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4RotZ(0.03)).getPosition());
+                    for (int i = 0; i <solidList.get(chosenSolid).getvB().size() ; i++) {
+                        solidList.get(chosenSolid).getvB().get(i).setPosition(solidList.get(chosenSolid).getvB().get(i).transform(new Mat4RotZ(0.03)).getPosition());
+                    }
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_NUMPAD7) {
+                    for (int i = 0; i <solidList.get(chosenSolid).getvB().size() ; i++) {
+                        solidList.get(chosenSolid).getvB().get(i).setPosition(solidList.get(chosenSolid).getvB().get(i).transform(new Mat4Transl(0, 0, -0.2)).getPosition());
+                    }
+
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_NUMPAD9) {
+                    for (int i = 0; i <solidList.get(chosenSolid).getvB().size() ; i++) {
+                        solidList.get(chosenSolid).getvB().get(i).setPosition(solidList.get(chosenSolid).getvB().get(i).transform(new Mat4Transl(0, 0, 0.2)).getPosition());
                     }
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_MULTIPLY) {
-                    for (int k = 0; k < 360; k++) {
+                    for (int k = 0; k < 10; k++) {
+                        for (int i = 0; i <solidList.get(chosenSolid).getvB().size() ; i++) {
+                            solidList.get(chosenSolid).getvB().get(i).setPosition(solidList.get(chosenSolid).getvB().get(i).transform(new Mat4RotZ(0.03)).getPosition());
+                        }
+                        redraw();
+                        try {
+                            TimeUnit.SECONDS.sleep(1);
 
-
-                    for (int i = 0; i <solidList.get(0).getvB().size() ; i++) {
-                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4RotX(0.03)).getPosition());
-                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4RotY(0.03)).getPosition());
-                        solidList.get(0).getvB().get(i).setPosition(solidList.get(0).getvB().get(i).transform(new Mat4RotZ(0.03)).getPosition());
+                        } catch (InterruptedException ex) {
+                            ex.printStackTrace();
+                        }
                     }
+                }
 
+                if (e.getKeyCode() == KeyEvent.VK_NUMPAD0) {
+
+                    if(chosenSolid == 2){
+                        chosenSolid = 0;
+                        System.out.println("Vybráno: Krychle");
+                    }else {
+                        chosenSolid ++;
+                        if (chosenSolid == 0){
+                            System.out.println("Vybráno: Krychle");
+                        }
+                        if (chosenSolid == 1){
+                            System.out.println("Vybráno: Pyramida");
+                        }
+                        if (chosenSolid == 2){
+                            System.out.println("Vybráno: Kvádr");
+                        }
                     }
+                    System.out.println(chosenSolid);
+
                 }
                 redraw();
 
@@ -311,5 +353,6 @@ public class Controller3D implements Controller {
         panel.clear();
         initObjects(panel.getRaster());
     }
+
 
 }
