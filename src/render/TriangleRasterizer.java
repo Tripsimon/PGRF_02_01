@@ -125,8 +125,10 @@ public class TriangleRasterizer {
                 Vec3D result = point12.mul(1 - t).add(point13.mul(t));
                 Vertex v = v12.mul(1 - t).add(v13.mul(t));
 
-                zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
-                //zBuffer.drawPixelWithTest(x, y, result.getZ(), new Col(255,0,0));
+                if (x > 0 && x <width && y > 0 && y < height) {
+                    //zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
+                    zBuffer.drawPixelWithTest(x, y, result.getZ(), new Col(255, 0, 0));
+                }
             }
 
 
@@ -158,15 +160,14 @@ public class TriangleRasterizer {
                 double t = (x - x1) / (double) (x2 - x1);
                 Vec3D result = point23.mul(1 - t).add(point13.mul(t));
                 Vertex v = v23.mul(1 - t).add(v13.mul(t));
-                zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
-                //zBuffer.drawPixelWithTest(x, y, result.getZ(), new Col(255,0,0));
+                if (x > 0 && x <width && y > 0 && y < height) {
+                    //zBuffer.drawPixelWithTest(x, y, result.getZ(), shader.shade(v));
+                    zBuffer.drawPixelWithTest(x, y, result.getZ(), new Col(255, 0, 0));
+                }
             }
 
 
         }
-
-
-
     }
 
     private Vec3D doMath(Vertex v) {

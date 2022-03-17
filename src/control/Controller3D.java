@@ -203,10 +203,28 @@ public class Controller3D implements Controller {
                     solidList.get(0).getvB().get(2).setPosition(solidList.get(0).getvB().get(2).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
                 }
 
-                if (e.getKeyCode() == KeyEvent.VK_NUMPAD2) {
+                if (e.getKeyCode() == KeyEvent.VK_NUMPAD5) {
                     System.out.println(solidList.get(0).getvB().get(0));
                     System.out.println(solidList.get(0).getvB().get(0).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
                     solidList.get(0).getvB().get(0).setPosition(solidList.get(0).getvB().get(0).transform(new Mat4Transl(0.2, 0, 0)).getPosition());
+                    solidList.get(0).getvB().get(1).setPosition(solidList.get(0).getvB().get(1).transform(new Mat4Transl(0.2, 0, 0)).getPosition());
+                    solidList.get(0).getvB().get(2).setPosition(solidList.get(0).getvB().get(2).transform(new Mat4Transl(0.2, 0, 0)).getPosition());
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_NUMPAD4) {
+                    System.out.println(solidList.get(0).getvB().get(0));
+                    System.out.println(solidList.get(0).getvB().get(0).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
+                    solidList.get(0).getvB().get(0).setPosition(solidList.get(0).getvB().get(0).transform(new Mat4Transl(0, -0.2, 0)).getPosition());
+                    solidList.get(0).getvB().get(1).setPosition(solidList.get(0).getvB().get(1).transform(new Mat4Transl(0, -0.2, 0)).getPosition());
+                    solidList.get(0).getvB().get(2).setPosition(solidList.get(0).getvB().get(2).transform(new Mat4Transl(0, -0.2, 0)).getPosition());
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_NUMPAD6) {
+                    System.out.println(solidList.get(0).getvB().get(0));
+                    System.out.println(solidList.get(0).getvB().get(0).transform(new Mat4Transl(-0.2, 0, 0)).getPosition());
+                    solidList.get(0).getvB().get(0).setPosition(solidList.get(0).getvB().get(0).transform(new Mat4Transl(0, 0.2, 0)).getPosition());
+                    solidList.get(0).getvB().get(1).setPosition(solidList.get(0).getvB().get(1).transform(new Mat4Transl(0, 0.2, 0)).getPosition());
+                    solidList.get(0).getvB().get(2).setPosition(solidList.get(0).getvB().get(2).transform(new Mat4Transl(0, 0.2, 0)).getPosition());
                 }
 
 
